@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ADP Roissy – Redevance</title>
+<title>ADP Roissy – Contrôle de nettoyage</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--green:#3DB84A;--green-light:#EBF9ED;--red:#E53935;--red-light:#FFF0F0;--blue:#1A2A4A;--blue2:#2B4275;--text:#1A2A4A;--muted:#7A8AA0;--border:#E5EAF0;--bg:#F4F6FA;--white:#fff;}
@@ -217,7 +217,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
       <span class="card-arrow">›</span>
     </div>
   </div>
-  <div style="text-align:center;padding:0 16px 24px;color:var(--muted);font-size:11px;">ADP Roissy · Formulaires de redevance</div>
+  <div style="text-align:center;padding:0 16px 24px;color:var(--muted);font-size:11px;">ADP Roissy · Contrôle de nettoyage</div>
 </div>
 
 <!-- TERMINAL 1 -->
@@ -701,7 +701,7 @@ function doDownload(form){
         '.pv-sig-img{height:75px;object-fit:contain;display:block;}',
         '.pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}'
       ].join('');
-      var fullHTML='<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>ADP Roissy</title><style>'+css+'</style></head><body>'+content+'</body></html>';
+      var fullHTML='<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>FTA Nettoyage – Contrôle</title><style>'+css+'</style></head><body>'+content+'</body></html>';
       var blob=new Blob([fullHTML],{type:'text/html;charset=utf-8'});
       var url=URL.createObjectURL(blob);
       var a=document.createElement('a');
