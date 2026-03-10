@@ -135,67 +135,97 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 
 <!-- ACCUEIL -->
 <div class="page active" id="page-home">
-  <div class="home-hdr" style="background:white;padding:0;text-align:left;">
+  <!-- ═══ NOUVELLE COUVERTURE ═══ -->
+  <div style="background:#F5F7FA;position:relative;overflow:hidden;">
 
-    <!-- ═══ BANDE LOGOS ═══ -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid #eee;background:white;">
+    <!-- Fond décoratif géométrique -->
+    <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:linear-gradient(160deg,rgba(27,58,107,0.04) 0%,rgba(200,146,42,0.06) 100%);clip-path:polygon(30% 0%,100% 0%,100% 100%,0% 100%);pointer-events:none;z-index:0;"></div>
+
+    <!-- HEADER : logos + meta -->
+    <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:2px solid #C8922A;background:#F5F7FA;">
       <!-- Logo Eiffage -->
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <span style="display:block;width:36px;height:9px;background:#D0161B;border-radius:1px;"></span>
-          <span style="display:block;width:27px;height:9px;background:#D0161B;border-radius:1px;"></span>
-          <span style="display:block;width:20px;height:9px;background:#D0161B;border-radius:1px;"></span>
+      <div>
+        <div style="display:flex;gap:3px;margin-bottom:5px;">
+          <span style="display:block;width:18px;height:5px;background:#CC2229;border-radius:1px;"></span>
+          <span style="display:block;width:10px;height:5px;background:#CC2229;border-radius:1px;"></span>
+          <span style="display:block;width:14px;height:5px;background:#CC2229;border-radius:1px;"></span>
         </div>
-        <div style="line-height:1.1;">
-          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.4rem;color:#D0161B;letter-spacing:0.04em;text-transform:uppercase;">EIFFAGE</div>
-          <div style="font-family:'Nunito',sans-serif;font-weight:700;font-size:0.48rem;color:#D0161B;letter-spacing:0.14em;text-transform:uppercase;">ÉNERGIE SYSTÈMES</div>
-        </div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:#0B1A2E;letter-spacing:3px;text-transform:uppercase;line-height:1;">EIFFAGE</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:400;font-size:0.45rem;color:#2A6FC4;letter-spacing:3px;text-transform:uppercase;">ÉNERGIE SYSTÈMES</div>
       </div>
       <!-- Logo FTA -->
-      <div style="display:flex;align-items:center;gap:8px;background:white;border:1.5px solid #dde3ec;border-radius:8px;padding:8px 14px;">
-        <svg width="36" height="36" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="38" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
-          <ellipse cx="40" cy="32" rx="12" ry="20" fill="white" opacity="0.9" transform="rotate(-15 40 32)"/>
-          <ellipse cx="44" cy="34" rx="10" ry="17" fill="#4caf50" opacity="0.5" transform="rotate(-15 44 34)"/>
-          <line x1="40" y1="50" x2="40" y2="64" stroke="white" stroke-width="4" stroke-linecap="round"/>
-          <ellipse cx="40" cy="66" rx="8" ry="3" fill="white" opacity="0.4"/>
-        </svg>
-        <div style="line-height:1.15;">
-          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;color:#1a3a5c;letter-spacing:0.04em;">FTA</div>
-          <div style="font-family:'Nunito',sans-serif;font-weight:700;font-size:0.48rem;color:#4a6080;letter-spacing:0.12em;text-transform:uppercase;">Nettoyage</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="width:44px;height:44px;border-radius:50%;border:2px solid #C8922A;display:flex;align-items:center;justify-content:center;background:white;">
+          <span style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.95rem;color:#0B1A2E;letter-spacing:1px;">FTA</span>
+        </div>
+        <div style="font-family:'Nunito',sans-serif;font-size:0.42rem;letter-spacing:2px;color:#1B3A6B;text-transform:uppercase;">Nettoyage</div>
+      </div>
+      <!-- Date/heure -->
+      <div style="text-align:right;">
+        <div id="home-date" style="font-family:'Nunito',sans-serif;font-size:0.6rem;color:#aaa;letter-spacing:0.5px;">--/--/---- · --:--</div>
+        <div style="font-family:'Nunito',sans-serif;font-size:0.55rem;color:#bbb;margin-top:2px;">ADP Roissy</div>
+      </div>
+    </div>
+
+    <!-- HERO : nom aéroport -->
+    <div style="position:relative;z-index:1;padding:22px 20px 14px;">
+      <div style="font-family:'Nunito',sans-serif;font-size:0.6rem;font-weight:800;letter-spacing:4px;color:#C8922A;text-transform:uppercase;margin-bottom:8px;">Rapport de contrôle</div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:2.1rem;line-height:0.95;color:#0B1A2E;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:8px;">Aéroport<br><span style="color:#2A6FC4;">Charles</span><br>de Gaulle</div>
+      <div style="display:inline-block;background:#0B1A2E;color:#C8922A;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.65rem;letter-spacing:5px;padding:4px 12px;margin-top:4px;">CDG · PARIS</div>
+    </div>
+
+    <!-- BLOC CLIENT -->
+    <div style="position:relative;z-index:1;margin:0 20px 14px;background:#0B1A2E;padding:12px 16px;display:flex;align-items:center;gap:14px;">
+      <div style="width:4px;height:36px;background:#C8922A;flex-shrink:0;border-radius:2px;"></div>
+      <div>
+        <div style="font-family:'Nunito',sans-serif;font-size:0.5rem;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:3px;">Client</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:2px;color:white;text-transform:uppercase;">Groupe ADP</div>
+      </div>
+    </div>
+
+    <!-- GRILLE TERMINAUX -->
+    <div style="position:relative;z-index:1;padding:0 20px 14px;">
+      <div style="font-family:'Nunito',sans-serif;font-size:0.5rem;font-weight:800;letter-spacing:3px;color:#999;text-transform:uppercase;margin-bottom:8px;">Périmètre d'intervention</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;">
+        <div style="background:#1B3A6B;padding:12px 6px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:#2A6FC4;"></div>
+          <div style="font-family:'Nunito',sans-serif;font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:2px;">Zone</div>
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;letter-spacing:1px;color:white;text-transform:uppercase;">Terminal 1</div>
+        </div>
+        <div style="background:#8B6914;padding:12px 6px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:#C8922A;"></div>
+          <div style="font-family:'Nunito',sans-serif;font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:2px;">Zone</div>
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;letter-spacing:1px;color:white;text-transform:uppercase;">Terminal 3</div>
+        </div>
+        <div style="background:#5C3A24;padding:12px 6px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:#7B4F2E;"></div>
+          <div style="font-family:'Nunito',sans-serif;font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:2px;">Zone</div>
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;letter-spacing:1px;color:white;text-transform:uppercase;">Nodal</div>
+        </div>
+        <div style="background:#1B5E45;padding:12px 6px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:#3A8C6E;"></div>
+          <div style="font-family:'Nunito',sans-serif;font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:2px;">Zone</div>
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;letter-spacing:1px;color:white;text-transform:uppercase;">Satellites</div>
         </div>
       </div>
     </div>
 
-    <!-- ═══ CORPS COUVERTURE (fond blanc, style PDF) ═══ -->
-    <div style="background:white;padding:20px 22px 16px;">
-
-      <!-- CLIENT -->
-      <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:0.75rem;color:#333;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">CLIENT :</div>
-
-      <!-- Bloc GROUPE ADP + tuiles -->
-      <div style="border-radius:6px;overflow:hidden;margin-bottom:18px;border:1px solid #ddd;">
-        <div style="background:#1A2A4A;color:white;text-align:center;padding:11px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;letter-spacing:0.2em;text-transform:uppercase;">GROUPE ADP</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#ccc;">
-          <div style="background:#2E5FA3;color:white;text-align:center;padding:18px 8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;">TERMINAL 1</div>
-          <div style="background:#B8860B;color:white;text-align:center;padding:18px 8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;">TERMINAL 3</div>
-          <div style="background:#4E342E;color:white;text-align:center;padding:18px 8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;">NODAL</div>
-          <div style="background:#1A2A4A;color:white;text-align:center;padding:18px 8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;">SATELLITES</div>
-        </div>
+    <!-- BANDE TYPE RAPPORT + DATE -->
+    <div style="position:relative;z-index:1;margin:0 20px 16px;display:flex;">
+      <div style="flex:1;background:#2A6FC4;padding:10px 14px;">
+        <div style="font-family:'Nunito',sans-serif;font-size:0.48rem;letter-spacing:3px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:2px;">Type de document</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:0.85rem;letter-spacing:1px;color:white;text-transform:uppercase;">Contrôle de Nettoyage</div>
       </div>
-
-      <!-- Titre principal -->
-      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.7rem;color:#111;letter-spacing:0.02em;text-transform:uppercase;line-height:1.05;margin-bottom:6px;">AÉROPORT CHARLES<br>DE GAULLE</div>
-      <div style="font-family:'Nunito',sans-serif;font-weight:700;font-size:0.7rem;color:#444;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">RAPPORT DE CONTRÔLE DE NETTOYAGE</div>
-
-      <!-- Date -->
-      <div id="home-date" style="font-family:'Nunito',sans-serif;font-weight:600;font-size:0.68rem;color:#7a8598;margin-top:4px;padding-bottom:4px;">--/--/---- · --:--</div>
+      <div id="cover-date-block" style="background:#C8922A;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;min-width:64px;">
+        <div id="cover-day" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.4rem;line-height:1;color:white;">--</div>
+        <div id="cover-month" style="font-family:'Nunito',sans-serif;font-size:0.5rem;letter-spacing:2px;color:rgba(255,255,255,0.85);text-transform:uppercase;">--- ----</div>
+      </div>
     </div>
 
-    <!-- ═══ FOOTER ═══ -->
-    <div style="background:#f4f6fa;padding:10px 22px;border-top:1px solid #dde3ec;display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-family:'Nunito',sans-serif;font-weight:600;font-size:0.58rem;color:#888;">ADP Roissy – Application de contrôle FTA Nettoyage © FTA Nettoyage – 2025</div>
-      <div style="font-family:'Nunito',sans-serif;font-weight:700;font-size:0.58rem;color:#888;">fta-app-one.vercel.app</div>
+    <!-- FOOTER -->
+    <div style="position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:8px 20px 14px;border-top:1px solid rgba(0,0,0,0.07);">
+      <div style="font-family:'Nunito',sans-serif;font-size:0.5rem;color:#bbb;letter-spacing:0.5px;">fta-app-one.vercel.app</div>
+      <div style="font-family:'Nunito',sans-serif;font-size:0.5rem;color:#ccc;letter-spacing:1px;">© FTA Nettoyage 2025</div>
     </div>
 
   </div>
@@ -372,6 +402,11 @@ function updateAllDates(){
   const{d,t}=getDT();
   ['t1','t3','nd'].forEach(f=>{const de=document.getElementById(f+'-date'),te=document.getElementById(f+'-time');if(de)de.textContent=d;if(te)te.textContent=t;});
   document.getElementById('home-date').textContent=d+' · '+t;
+  const n=new Date();
+  const months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  const dayEl=document.getElementById('cover-day'),monthEl=document.getElementById('cover-month');
+  if(dayEl)dayEl.textContent=pad(n.getDate());
+  if(monthEl)monthEl.textContent=months[n.getMonth()]+' '+n.getFullYear();
 }
 updateAllDates();setInterval(updateAllDates,10000);
 
