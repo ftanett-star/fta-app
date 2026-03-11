@@ -593,7 +593,7 @@ const formConfig={
   nd:{title:'NODAL',color:'#1A2A4A',zones:[{id:'nd-n3',label:'NIVEAU -3',color:'#4E342E'},{id:'nd-n2',label:'NIVEAU -2',color:'#6A1B9A'},{id:'nd-n1',label:'NIVEAU -1',color:'#283593'},{id:'nd-n0',label:'NIVEAU 0',color:'#1565C0'},{id:'nd-p1',label:'NIVEAU 1',color:'#00695C'},{id:'nd-gm',label:'GALERIE MARCHANDE',color:'#E65100'}],ctrlKey:'nd-ctrl',cliKey:'nd-cli'}
 };
 
-function doPrint(form){
+function doPrint(form,printOnly){
   const cfg=formConfig[form];
   const{d,t}=getDT();
   const ctrl=document.getElementById('val-'+cfg.ctrlKey).textContent;
@@ -704,15 +704,15 @@ function doPrint(form){
   html+=`<div class="pv-footer">Créé par ADP Roissy App – ${d} © FTA Nettoyage</div>`;
 
   document.getElementById('printview').innerHTML=html;
-  setTimeout(()=>window.print(),200);
+  if(printOnly!==false) setTimeout(()=>window.print(),200);
 }
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
 function doDownload(form){
   try{
-    // Build print view first
-    doPrint(form);
+    // Build print view without triggering window.print()
+    doPrint(form, false);
     setTimeout(function(){
       var cfg=formConfig[form];
       var content=document.getElementById('printview').innerHTML;
