@@ -490,31 +490,45 @@ function addHS(zoneId,zoneName){
 }
 function removeHS(blockId,zoneId){document.getElementById(blockId).remove();if(document.getElementById('hs-'+zoneId).children.length===0)document.getElementById('empty-'+zoneId).style.display='block';}
 function setEtat(btn){btn.closest('.hs-etat-opts').querySelectorAll('.etat-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
-function saveToGallery(src, filename) {
+async function saveToGallery(src, filename) {
   try {
+    // Méthode 1 : Web Share API (iOS/Android natif - sauvegarde dans la galerie)
+    if (navigator.canShare) {
+      const blob = await (await fetch(src)).blob();
+      const file = new File([blob], filename || ('ADP_Roissy_' + Date.now() + '.jpg'), {type: 'image/jpeg'});
+      if (navigator.canShare({files: [file]})) {
+        await navigator.share({files: [file], title: 'Photo ADP Roissy'});
+        return;
+      }
+    }
+    // Méthode 2 : téléchargement direct (Android Chrome)
     var a = document.createElement('a');
     a.href = src;
-    a.download = filename || ('photo_' + Date.now() + '.jpg');
+    a.download = filename || ('ADP_Roissy_' + Date.now() + '.jpg');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  } catch(e) { console.log('Galerie non supportée', e); }
+  } catch(e) { console.log('Galerie:', e); }
 }
 
 function addPh(inp,tid,wid){
   const c=document.getElementById(tid);
   const isCamera = inp.hasAttribute('capture');
   Array.from(inp.files).forEach(f=>{
+    // Sauvegarder le fichier original AVANT compression pour garder la qualité max
+    if(isCamera){
+      const originalURL = URL.createObjectURL(f);
+      const fname = 'ADP_Roissy_' + Date.now() + '.jpg';
+      saveToGallery(originalURL, fname).then(()=>{
+        setTimeout(()=>URL.revokeObjectURL(originalURL), 5000);
+      });
+    }
     const r=new FileReader();
     r.onload=e=>{
       compressImg(e.target.result,1200,1200,0.85).then(src=>{
         const w=document.createElement('div');w.className='twrap';
         w.innerHTML='<img class="timg" src="'+src+'" data-src="'+src+'"><button class="tremove" onclick="this.parentElement.remove()">×</button>';
         c.appendChild(w);document.getElementById(wid).style.display='none';
-        // Sauvegarder dans la galerie si photo prise avec la caméra
-        if(isCamera){
-          saveToGallery(src, 'ADP_Roissy_' + Date.now() + '.jpg');
-        }
       });
     };r.readAsDataURL(f);
   });inp.value='';
