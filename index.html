@@ -681,29 +681,29 @@ function buildReportHTML(form){
     body{font-family:'Nunito',sans-serif;font-size:11pt;color:#000;margin:0;padding:0;}
     .pv-content{padding:10mm;max-width:800px;}
     /* ===== PAGE DE GARDE PLEINE PAGE ===== */
-    .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin:0;border:none;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;}
+    .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin:0;border:none;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;box-sizing:border-box;}
     .cover-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:2px solid #C8922A;background:#F5F7FA;}
     .cover-eiffage-bars{display:flex;gap:3px;margin-bottom:5px;}
     .cover-eiffage-bar{height:5px;background:#CC2229;border-radius:1px;}
     .cover-eiffage-name{font-weight:900;font-size:1.3rem;color:#0B1A2E;letter-spacing:3px;text-transform:uppercase;line-height:1;}
     .cover-eiffage-sub{font-weight:400;font-size:0.5rem;color:#2A6FC4;letter-spacing:3px;text-transform:uppercase;}
     .cover-fta-circle{width:54px;height:54px;border-radius:50%;border:2px solid #C8922A;display:flex;align-items:center;justify-content:center;background:white;text-align:center;font-weight:900;font-size:1.05rem;color:#0B1A2E;letter-spacing:1px;}
-    .cover-hero{padding:30px 28px 20px;}
+    .cover-hero{padding:30px 28px 20px;flex:1;display:flex;flex-direction:column;justify-content:flex-start;}
     .cover-tag{font-size:0.65rem;font-weight:800;letter-spacing:4px;color:#C8922A;text-transform:uppercase;margin-bottom:12px;}
     .cover-title{font-weight:900;font-size:4rem;line-height:0.92;color:#0B1A2E;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:20px;}
     .cover-badge{display:inline-block;background:#0B1A2E;color:#C8922A;font-weight:800;font-size:0.7rem;letter-spacing:5px;padding:6px 14px;margin-top:8px;}
-    .cover-client{margin:0 28px;background:#0B1A2E;padding:18px 20px;display:flex;align-items:center;gap:14px;}
+    .cover-client{margin:0 28px 24px;background:#0B1A2E;padding:18px 20px;display:flex;align-items:center;gap:14px;}
     .cover-client-bar{width:4px;height:44px;background:#C8922A;flex-shrink:0;border-radius:2px;}
     .cover-client-label{font-size:0.55rem;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:3px;}
     .cover-client-name{font-weight:900;font-size:1.3rem;letter-spacing:2px;color:white;text-transform:uppercase;}
-    .cover-grid{padding:0 28px;}
+    .cover-grid{padding:0 28px 24px;}
     .cover-grid-label{font-size:0.55rem;font-weight:800;letter-spacing:3px;color:#999;text-transform:uppercase;margin-bottom:10px;}
     .cover-grid-cells{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;}
     .cover-cell{padding:28px 6px;text-align:center;position:relative;}
     .cover-cell-accent{position:absolute;bottom:0;left:0;right:0;height:3px;}
     .cover-cell-sublabel{font-size:0.45rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:4px;}
     .cover-cell-name{font-weight:900;font-size:0.85rem;letter-spacing:1px;color:white;text-transform:uppercase;}
-    .cover-band{margin:0 28px;display:flex;}
+    .cover-band{margin:0 28px 24px;display:flex;}
     .cover-band-left{flex:1;background:#2A6FC4;padding:22px 18px;}
     .cover-band-type{font-size:0.52rem;letter-spacing:3px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:4px;}
     .cover-band-title{font-weight:900;font-size:1.05rem;letter-spacing:1px;color:white;text-transform:uppercase;}
