@@ -91,7 +91,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
   .page,.bbar,.fab,.ov,.smov,.toast{display:none!important;}
   #printview{display:block!important;}
-  @page{margin:10mm;size:A4;}
+  @page{margin:0;size:A4;}
+  @page:not(:first){margin:10mm;size:A4;}
 }
 #printview{display:none;font-family:'Nunito',sans-serif;font-size:11pt;color:#000;}
 /* Styles couverture print = styles app */
@@ -288,10 +289,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <div class="zhdr" style="background:#004F8C" onclick="toggleZ('zb-t1-n10','zt-t1-n10')"><span style="color:white">🔼</span><span class="ztit">NIVEAU 10</span><button class="ztog" id="zt-t1-n10">+</button></div>
     <div class="zbody col" id="zb-t1-n10"><div class="hs-list" id="hs-t1-n10"></div><div class="empty-state" id="empty-t1-n10">Aucun bloc HS</div><button class="btn-add-hs" onclick="addHS('t1-n10','NIVEAU 10')">＋ Ajouter un bloc HS</button></div>
     <div style="margin-top:4px">
-      <div class="shdr" onclick="toggleSig('t1')"><span>✏️</span><span class="stit">Signatures</span><span class="sstar">*</span><button class="stog" id="stog-t1">−</button></div>
+      <div class="shdr" onclick="toggleSig('t1')"><span>️</span><span class="stit">Signatures</span><span class="sstar">*</span><button class="stog" id="stog-t1">−</button></div>
       <div class="sbody" id="sbody-t1">
-        <div class="sbox" onclick="openSigM('t1-ctrl')"><div class="sboxtit">✏️ Contrôleur<span class="rstar">*</span></div><div id="sp-t1-ctrl"><div class="sph">Appuyer pour signer</div></div></div>
-        <div class="sbox" onclick="openSigM('t1-cli')"><div class="sboxtit">✏️ Client</div><div id="sp-t1-cli"><div class="sph">Appuyer pour signer</div></div></div>
+        <div class="sbox" onclick="openSigM('t1-ctrl')"><div class="sboxtit">️ Contrôleur<span class="rstar">*</span></div><div id="sp-t1-ctrl"><div class="sph">Appuyer pour signer</div></div></div>
+        <div class="sbox" onclick="openSigM('t1-cli')"><div class="sboxtit">️ Client</div><div id="sp-t1-cli"><div class="sph">Appuyer pour signer</div></div></div>
       </div>
     </div>
   </div>
@@ -317,10 +318,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <div class="zhdr" style="background:#7B2D8B" onclick="toggleZ('zb-t3-arr','zt-t3-arr')"><span style="color:white">🛬</span><span class="ztit">ARRIVÉE</span><button class="ztog" id="zt-t3-arr">+</button></div>
     <div class="zbody col" id="zb-t3-arr"><div class="hs-list" id="hs-t3-arr"></div><div class="empty-state" id="empty-t3-arr">Aucun bloc HS</div><button class="btn-add-hs" onclick="addHS('t3-arr','ARRIVÉE')">＋ Ajouter un bloc HS</button></div>
     <div style="margin-top:4px">
-      <div class="shdr" onclick="toggleSig('t3')"><span>✏️</span><span class="stit">Signatures</span><span class="sstar">*</span><button class="stog" id="stog-t3">−</button></div>
+      <div class="shdr" onclick="toggleSig('t3')"><span>️</span><span class="stit">Signatures</span><span class="sstar">*</span><button class="stog" id="stog-t3">−</button></div>
       <div class="sbody" id="sbody-t3">
-        <div class="sbox" onclick="openSigM('t3-ctrl')"><div class="sboxtit">✏️ Contrôleur<span class="rstar">*</span></div><div id="sp-t3-ctrl"><div class="sph">Appuyer pour signer</div></div></div>
-        <div class="sbox" onclick="openSigM('t3-cli')"><div class="sboxtit">✏️ Client</div><div id="sp-t3-cli"><div class="sph">Appuyer pour signer</div></div></div>
+        <div class="sbox" onclick="openSigM('t3-ctrl')"><div class="sboxtit">️ Contrôleur<span class="rstar">*</span></div><div id="sp-t3-ctrl"><div class="sph">Appuyer pour signer</div></div></div>
+        <div class="sbox" onclick="openSigM('t3-cli')"><div class="sboxtit">️ Client</div><div id="sp-t3-cli"><div class="sph">Appuyer pour signer</div></div></div>
       </div>
     </div>
   </div>
@@ -354,10 +355,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
     <div class="zhdr" style="background:#E65100" onclick="toggleZ('zb-nd-gm','zt-nd-gm')"><span style="color:white">🏪</span><span class="ztit">GALERIE MARCHANDE</span><button class="ztog" id="zt-nd-gm">+</button></div>
     <div class="zbody col" id="zb-nd-gm"><div class="hs-list" id="hs-nd-gm"></div><div class="empty-state" id="empty-nd-gm">Aucun bloc HS</div><button class="btn-add-hs" onclick="addHS('nd-gm','GALERIE MARCHANDE')">＋ Ajouter un bloc HS</button></div>
     <div style="margin-top:4px">
-      <div class="shdr" onclick="toggleSig('nd')"><span>✏️</span><span class="stit">Signatures</span><span class="sstar">*</span><button class="stog" id="stog-nd">−</button></div>
+      <div class="shdr" onclick="toggleSig('nd')"><span>️</span><span class="stit">Signatures</span><span class="sstar">*</span><button class="stog" id="stog-nd">−</button></div>
       <div class="sbody" id="sbody-nd">
-        <div class="sbox" onclick="openSigM('nd-ctrl')"><div class="sboxtit">✏️ Contrôleur<span class="rstar">*</span></div><div id="sp-nd-ctrl"><div class="sph">Appuyer pour signer</div></div></div>
-        <div class="sbox" onclick="openSigM('nd-cli')"><div class="sboxtit">✏️ Client</div><div id="sp-nd-cli"><div class="sph">Appuyer pour signer</div></div></div>
+        <div class="sbox" onclick="openSigM('nd-ctrl')"><div class="sboxtit">️ Contrôleur<span class="rstar">*</span></div><div id="sp-nd-ctrl"><div class="sph">Appuyer pour signer</div></div></div>
+        <div class="sbox" onclick="openSigM('nd-cli')"><div class="sboxtit">️ Client</div><div id="sp-nd-cli"><div class="sph">Appuyer pour signer</div></div></div>
       </div>
     </div>
   </div>
@@ -487,15 +488,31 @@ function addHS(zoneId,zoneName){
 }
 function removeHS(blockId,zoneId){document.getElementById(blockId).remove();if(document.getElementById('hs-'+zoneId).children.length===0)document.getElementById('empty-'+zoneId).style.display='block';}
 function setEtat(btn){btn.closest('.hs-etat-opts').querySelectorAll('.etat-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+function saveToGallery(src, filename) {
+  try {
+    var a = document.createElement('a');
+    a.href = src;
+    a.download = filename || ('photo_' + Date.now() + '.jpg');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch(e) { console.log('Galerie non supportée', e); }
+}
+
 function addPh(inp,tid,wid){
   const c=document.getElementById(tid);
+  const isCamera = inp.hasAttribute('capture');
   Array.from(inp.files).forEach(f=>{
     const r=new FileReader();
     r.onload=e=>{
-      compressImg(e.target.result,300,300,0.4).then(src=>{
+      compressImg(e.target.result,1200,1200,0.85).then(src=>{
         const w=document.createElement('div');w.className='twrap';
         w.innerHTML='<img class="timg" src="'+src+'" data-src="'+src+'"><button class="tremove" onclick="this.parentElement.remove()">×</button>';
         c.appendChild(w);document.getElementById(wid).style.display='none';
+        // Sauvegarder dans la galerie si photo prise avec la caméra
+        if(isCamera){
+          saveToGallery(src, 'ADP_Roissy_' + Date.now() + '.jpg');
+        }
       });
     };r.readAsDataURL(f);
   });inp.value='';
@@ -661,47 +678,55 @@ function buildReportHTML(form){
   var prenom=parts.slice(0,-1).join(' ')||'';
 
   var css=`
-    body{font-family:'Nunito',sans-serif;font-size:11pt;color:#000;margin:10mm;max-width:800px;}
-    .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin-bottom:20px;border:1px solid #ddd;}
-    .cover-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:2px solid #C8922A;background:#F5F7FA;}
+    body{font-family:'Nunito',sans-serif;font-size:11pt;color:#000;margin:0;padding:0;}
+    .pv-content{padding:10mm;max-width:800px;}
+    /* ===== PAGE DE GARDE PLEINE PAGE ===== */
+    .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin:0;border:none;height:297mm;width:210mm;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;}
+    .cover-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:2px solid #C8922A;background:#F5F7FA;}
     .cover-eiffage-bars{display:flex;gap:3px;margin-bottom:5px;}
     .cover-eiffage-bar{height:5px;background:#CC2229;border-radius:1px;}
-    .cover-eiffage-name{font-weight:900;font-size:1.1rem;color:#0B1A2E;letter-spacing:3px;text-transform:uppercase;line-height:1;}
-    .cover-eiffage-sub{font-weight:400;font-size:0.45rem;color:#2A6FC4;letter-spacing:3px;text-transform:uppercase;}
-    .cover-fta-circle{width:44px;height:44px;border-radius:50%;border:2px solid #C8922A;display:flex;align-items:center;justify-content:center;background:white;text-align:center;font-weight:900;font-size:0.95rem;color:#0B1A2E;letter-spacing:1px;}
-    .cover-hero{padding:22px 20px 14px;}
-    .cover-tag{font-size:0.6rem;font-weight:800;letter-spacing:4px;color:#C8922A;text-transform:uppercase;margin-bottom:8px;}
-    .cover-title{font-weight:900;font-size:2.1rem;line-height:0.95;color:#0B1A2E;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:8px;}
-    .cover-badge{display:inline-block;background:#0B1A2E;color:#C8922A;font-weight:800;font-size:0.65rem;letter-spacing:5px;padding:4px 12px;margin-top:4px;}
-    .cover-client{margin:0 20px 14px;background:#0B1A2E;padding:12px 16px;display:flex;align-items:center;gap:14px;}
-    .cover-client-bar{width:4px;height:36px;background:#C8922A;flex-shrink:0;border-radius:2px;}
-    .cover-client-label{font-size:0.5rem;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:3px;}
-    .cover-client-name{font-weight:900;font-size:1.05rem;letter-spacing:2px;color:white;text-transform:uppercase;}
-    .cover-grid{padding:0 20px 14px;}
-    .cover-grid-label{font-size:0.5rem;font-weight:800;letter-spacing:3px;color:#999;text-transform:uppercase;margin-bottom:8px;}
+    .cover-eiffage-name{font-weight:900;font-size:1.3rem;color:#0B1A2E;letter-spacing:3px;text-transform:uppercase;line-height:1;}
+    .cover-eiffage-sub{font-weight:400;font-size:0.5rem;color:#2A6FC4;letter-spacing:3px;text-transform:uppercase;}
+    .cover-fta-circle{width:54px;height:54px;border-radius:50%;border:2px solid #C8922A;display:flex;align-items:center;justify-content:center;background:white;text-align:center;font-weight:900;font-size:1.05rem;color:#0B1A2E;letter-spacing:1px;}
+    .cover-hero{padding:50px 28px 30px;flex:1;}
+    .cover-tag{font-size:0.65rem;font-weight:800;letter-spacing:4px;color:#C8922A;text-transform:uppercase;margin-bottom:12px;}
+    .cover-title{font-weight:900;font-size:3.2rem;line-height:0.95;color:#0B1A2E;text-transform:uppercase;letter-spacing:-0.5px;margin-bottom:16px;}
+    .cover-badge{display:inline-block;background:#0B1A2E;color:#C8922A;font-weight:800;font-size:0.7rem;letter-spacing:5px;padding:6px 14px;margin-top:8px;}
+    .cover-client{margin:0 28px 20px;background:#0B1A2E;padding:18px 20px;display:flex;align-items:center;gap:14px;}
+    .cover-client-bar{width:4px;height:44px;background:#C8922A;flex-shrink:0;border-radius:2px;}
+    .cover-client-label{font-size:0.55rem;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:3px;}
+    .cover-client-name{font-weight:900;font-size:1.3rem;letter-spacing:2px;color:white;text-transform:uppercase;}
+    .cover-grid{padding:0 28px 20px;}
+    .cover-grid-label{font-size:0.55rem;font-weight:800;letter-spacing:3px;color:#999;text-transform:uppercase;margin-bottom:10px;}
     .cover-grid-cells{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;}
-    .cover-cell{padding:12px 6px;text-align:center;position:relative;}
+    .cover-cell{padding:20px 6px;text-align:center;position:relative;}
     .cover-cell-accent{position:absolute;bottom:0;left:0;right:0;height:3px;}
-    .cover-cell-sublabel{font-size:0.42rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:2px;}
-    .cover-cell-name{font-weight:900;font-size:0.7rem;letter-spacing:1px;color:white;text-transform:uppercase;}
-    .cover-band{margin:0 20px 16px;display:flex;}
-    .cover-band-left{flex:1;background:#2A6FC4;padding:10px 14px;}
-    .cover-band-type{font-size:0.48rem;letter-spacing:3px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:2px;}
-    .cover-band-title{font-weight:900;font-size:0.85rem;letter-spacing:1px;color:white;text-transform:uppercase;}
-    .cover-band-right{background:#C8922A;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;min-width:64px;}
-    .cover-band-day{font-weight:900;font-size:1.4rem;line-height:1;color:white;}
-    .cover-band-month{font-size:0.5rem;letter-spacing:2px;color:rgba(255,255,255,0.85);text-transform:uppercase;}
-    .cover-footer{display:flex;justify-content:space-between;align-items:center;padding:8px 20px 14px;border-top:1px solid rgba(0,0,0,0.07);font-size:0.5rem;color:#bbb;letter-spacing:0.5px;}
+    .cover-cell-sublabel{font-size:0.45rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:4px;}
+    .cover-cell-name{font-weight:900;font-size:0.85rem;letter-spacing:1px;color:white;text-transform:uppercase;}
+    .cover-band{margin:0 28px 24px;display:flex;}
+    .cover-band-left{flex:1;background:#2A6FC4;padding:16px 18px;}
+    .cover-band-type{font-size:0.52rem;letter-spacing:3px;color:rgba(255,255,255,0.65);text-transform:uppercase;margin-bottom:4px;}
+    .cover-band-title{font-weight:900;font-size:1.05rem;letter-spacing:1px;color:white;text-transform:uppercase;}
+    /* Date cliquable/modifiable */
+    .cover-band-right{background:#C8922A;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;min-width:80px;cursor:pointer;}
+    .cover-band-right:hover{background:#b8821a;}
+    .cover-band-day{font-weight:900;font-size:2.2rem;line-height:1;color:white;}
+    .cover-band-month{font-size:0.55rem;letter-spacing:2px;color:rgba(255,255,255,0.85);text-transform:uppercase;}
+    .cover-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 28px 20px;border-top:1px solid rgba(0,0,0,0.07);font-size:0.52rem;color:#bbb;letter-spacing:0.5px;}
+    /* ===== RAPPORT ===== */
     .pv-logo-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 10px;border-bottom:2px solid #1A2A4A;margin-bottom:8px;}
     .pv-main-title{text-align:center;font-size:15pt;font-weight:900;color:#000;margin:14px 0 10px;}
     .pv-meta{margin:10px 0 16px;font-size:11pt;line-height:2.2;}.pv-meta p{margin:0;}
     .pv-zone-title{text-align:center;border:1px solid #333;padding:7px;font-size:12pt;font-weight:700;margin:16px 0 10px;}
     .pv-item{margin:10px 0;}.pv-item-label{font-weight:700;}.pv-item-val{font-size:11pt;}
     .pv-etat{font-weight:700;margin:3px 0 8px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
-    .pv-photo-label{font-weight:700;margin:8px 0 5px;}.pv-photo-img{display:block;width:200px;height:auto;border:1px solid #ccc;margin-bottom:14px;}
+    /* ===== PHOTOS NETTES ET GRANDES ===== */
+    .pv-photo-label{font-weight:700;margin:8px 0 5px;}.pv-photo-img{display:block;width:100%;max-width:480px;height:auto;border:1px solid #ccc;margin-bottom:14px;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;}
     .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:12pt;font-weight:700;margin:24px 0 14px;}
     .pv-sig-label{font-weight:700;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
-    .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}`;
+    .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}
+    /* Tooltip date */
+    .date-hint{font-size:0.4rem;color:rgba(255,255,255,0.6);text-align:right;margin-top:3px;letter-spacing:1px;}`;
 
   var n=new Date();
   var months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
@@ -769,7 +794,7 @@ function buildReportHTML(form){
   </div>`;
 
   // RAPPORT
-  body+=`<div class="pv-logo-bar">
+  body+=`<div class="pv-content"><div class="pv-logo-bar">
     <div style="font-size:13pt;font-weight:900;color:#1A2A4A;">EIFFAGE <span style="font-size:8pt;color:#666;letter-spacing:3px;">ÉNERGIE SYSTÈMES</span></div>
     <div style="text-align:right;font-size:9.5pt;color:#444;line-height:1.6;"><strong style="color:#1A2A4A;font-size:11pt;">FTA NETTOYAGE</strong><br>22 rue de L'Interne Loeb<br>75013 Paris</div>
   </div>`;
@@ -806,10 +831,29 @@ function buildReportHTML(form){
   body+=`<div class="pv-sig-title">Signatures</div>`;
   if(sc)body+=`<div class="pv-sig-label">Signature contrôleur :</div><img class="pv-sig-img" src="${sc}">`;
   if(sl)body+=`<div class="pv-sig-label">Signature client :</div><img class="pv-sig-img" src="${sl}">`;
-  body+=`<div class="pv-footer">Créé par ADP Roissy App – ${d} © FTA Nettoyage</div>`;
+  body+=`<div class="pv-footer">Créé par ADP Roissy App – ${d} © FTA Nettoyage</div></div>`;
 
   return {
-    fullHTML: '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>ADP Roissy – Rapport</title><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"><style>'+css+'</style></head><body>'+body+'</body></html>',
+    fullHTML: '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>ADP Roissy – Rapport</title><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"><style>'+css+'</style></head><body>'+body+'
+<script>
+function editCoverDate() {
+  var pv = document.getElementById('printview');
+  if (!pv) return;
+  var dayEl = pv.querySelector('#pv-cover-day');
+  var monthEl = pv.querySelector('#pv-cover-month');
+  if (!dayEl || !monthEl) return;
+  var current = dayEl.innerText + ' ' + monthEl.innerText;
+  var newDate = prompt('Modifier la date (ex: 18 Mar 2026):', current);
+  if (newDate && newDate.trim()) {
+    var parts = newDate.trim().split(' ');
+    if (parts.length >= 3) {
+      dayEl.innerText = parts[0];
+      monthEl.innerText = parts[1] + ' ' + parts[2];
+    }
+  }
+}
+</script>
+</body></html>',
     body: body,
     ctrl: ctrl, cli: cli, d: d, t: t
   };
@@ -887,6 +931,25 @@ function buildTextSummary(form){
 }
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+
+<script>
+function editCoverDate() {
+  var pv = document.getElementById('printview');
+  if (!pv) return;
+  var dayEl = pv.querySelector('#pv-cover-day');
+  var monthEl = pv.querySelector('#pv-cover-month');
+  if (!dayEl || !monthEl) return;
+  var current = dayEl.innerText + ' ' + monthEl.innerText;
+  var newDate = prompt('Modifier la date (ex: 18 Mar 2026):', current);
+  if (newDate && newDate.trim()) {
+    var parts = newDate.trim().split(' ');
+    if (parts.length >= 3) {
+      dayEl.innerText = parts[0];
+      monthEl.innerText = parts[1] + ' ' + parts[2];
+    }
+  }
+}
 </script>
 </body>
 </html>
