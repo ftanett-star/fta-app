@@ -834,8 +834,12 @@ function buildReportHTML(form){
   body+=`<div class="pv-footer">Créé par ADP Roissy App – ${d} © FTA Nettoyage</div></div>`;
 
   return {
-    fullHTML: '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>ADP Roissy – Rapport</title><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"><style>'+css+'</style></head><body>'+body+'
-<script>
+    fullHTML: '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>ADP Roissy – Rapport</title><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"><style>'+css+'</style></head><body>'+body+'</body></html>',
+    body: body,
+    ctrl: ctrl, cli: cli, d: d, t: t
+  };
+}
+
 function editCoverDate() {
   var pv = document.getElementById('printview');
   if (!pv) return;
@@ -852,13 +856,6 @@ function editCoverDate() {
     }
   }
 }
-</script>
-</body></html>',
-    body: body,
-    ctrl: ctrl, cli: cli, d: d, t: t
-  };
-}
-
 function doDownload(form){
   try{
     var report=buildReportHTML(form);
@@ -933,23 +930,5 @@ function buildTextSummary(form){
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 </script>
 
-<script>
-function editCoverDate() {
-  var pv = document.getElementById('printview');
-  if (!pv) return;
-  var dayEl = pv.querySelector('#pv-cover-day');
-  var monthEl = pv.querySelector('#pv-cover-month');
-  if (!dayEl || !monthEl) return;
-  var current = dayEl.innerText + ' ' + monthEl.innerText;
-  var newDate = prompt('Modifier la date (ex: 18 Mar 2026):', current);
-  if (newDate && newDate.trim()) {
-    var parts = newDate.trim().split(' ');
-    if (parts.length >= 3) {
-      dayEl.innerText = parts[0];
-      monthEl.innerText = parts[1] + ' ' + parts[2];
-    }
-  }
-}
-</script>
 </body>
 </html>
