@@ -516,16 +516,12 @@ async function saveToGallery(src, filename) {
 
 function addPh(inp,tid,wid){
   const c=document.getElementById(tid);
-  const isCamera = inp.hasAttribute('capture');
   Array.from(inp.files).forEach(f=>{
-    // Sauvegarder le fichier original AVANT compression pour garder la qualité max
-    if(isCamera){
-      const originalURL = URL.createObjectURL(f);
-      const fname = 'ADP_Roissy_' + Date.now() + '.jpg';
-      saveToGallery(originalURL, fname).then(()=>{
-        setTimeout(()=>URL.revokeObjectURL(originalURL), 5000);
-      });
-    }
+    const originalURL = URL.createObjectURL(f);
+    const fname = 'ADP_Roissy_' + Date.now() + '.jpg';
+    saveToGallery(originalURL, fname).then(()=>{
+      setTimeout(()=>URL.revokeObjectURL(originalURL), 5000);
+    });
     const r=new FileReader();
     r.onload=e=>{
       compressImg(e.target.result,1200,1200,0.85).then(src=>{
@@ -732,17 +728,20 @@ function buildReportHTML(form){
     .cover-band-day{font-weight:900;font-size:2.2rem;line-height:1;color:white;}
     .cover-band-month{font-size:0.55rem;letter-spacing:2px;color:rgba(255,255,255,0.85);text-transform:uppercase;}
     .cover-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 28px 20px;border-top:1px solid rgba(0,0,0,0.07);font-size:0.52rem;color:#bbb;letter-spacing:0.5px;}
-    /* ===== RAPPORT ===== */
+    /* ===== RAPPORT STYLE KIZEO ===== */
     .pv-logo-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 0 10px;border-bottom:2px solid #1A2A4A;margin-bottom:8px;}
     .pv-main-title{text-align:center;font-size:15pt;font-weight:900;color:#000;margin:14px 0 10px;}
-    .pv-meta{margin:10px 0 16px;font-size:11pt;line-height:2.2;}.pv-meta p{margin:0;}
-    .pv-zone-title{text-align:center;border:1px solid #333;padding:7px;font-size:12pt;font-weight:700;margin:16px 0 10px;}
-    .pv-item{margin:10px 0;}.pv-item-label{font-weight:700;}.pv-item-val{font-size:11pt;}
-    .pv-etat{font-weight:700;margin:3px 0 8px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
-    /* ===== PHOTOS NETTES ET GRANDES ===== */
-    .pv-photo-label{font-weight:700;margin:8px 0 5px;}.pv-photo-img{display:block;width:100%;max-width:160mm;height:auto;border:1px solid #ccc;margin-bottom:14px;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;}
-    .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:12pt;font-weight:700;margin:24px 0 14px;}
-    .pv-sig-label{font-weight:700;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
+    .pv-meta{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin:10px 0 16px;font-size:10pt;line-height:1.9;}.pv-meta p{margin:0;}
+    .pv-zone-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:16px 0 10px;background:#f9f9f9;}
+    /* GRILLE 2 COLONNES pour les blocs */
+    .pv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin:0;}
+    .pv-col{break-inside:avoid;}
+    .pv-item-label{font-weight:700;font-size:10pt;}.pv-item-val{font-size:10pt;}
+    .pv-etat{font-weight:700;font-size:10pt;margin:2px 0 6px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
+    .pv-photo-label{font-weight:700;font-size:10pt;margin:6px 0 4px;}
+    .pv-photo-img{display:block;width:100%;max-width:85mm;height:auto;border:1px solid #ccc;margin-bottom:10px;}
+    .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:24px 0 14px;background:#f9f9f9;}
+    .pv-sig-label{font-weight:700;font-size:10pt;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
     .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}
     /* Tooltip date */
     .date-hint{font-size:0.4rem;color:rgba(255,255,255,0.6);text-align:right;margin-top:3px;letter-spacing:1px;}`;
@@ -830,20 +829,23 @@ function buildReportHTML(form){
     var blocks=document.getElementById('hs-'+zone.id).querySelectorAll('.hs-block');
     if(blocks.length===0)return;
     body+=`<div class="pv-zone-title">${zone.label}</div>`;
+    body+=`<div class="pv-grid">`;
     blocks.forEach(function(block){
       var zoneVal=block.querySelector('.hs-input')?.value||'';
       var etatBtn=block.querySelector('.etat-btn.sel');
       var etat=etatBtn?(etatBtn.classList.contains('conforme')?'CONFORME':'NON CONFORME'):'';
       var etatClass=etat==='CONFORME'?'ok':'ko';
       var imgs=block.querySelectorAll('.timg');
-      if(imgs.length>0){
-        body+=`<div class="pv-item"><div class="pv-photo-label">Photo :</div>`;
-        imgs.forEach(function(img){body+=`<img class="pv-photo-img" src="${img.getAttribute('data-src')}">`;});
-        body+=`</div>`;
-      }
-      if(zoneVal)body+=`<div class="pv-item"><span class="pv-item-label">ECLAIRAGE : </span><span class="pv-item-val">${zoneVal}</span></div>`;
+      body+=`<div class="pv-col">`;
+      body+=`<span class="pv-item-label">ECLAIRAGE : </span><span class="pv-item-val">${zoneVal}</span>`;
       if(etat)body+=`<div class="pv-etat ${etatClass}">ETAT : ${etat}</div>`;
+      if(imgs.length>0){
+        body+=`<div class="pv-photo-label">Photo :</div>`;
+        imgs.forEach(function(img){body+=`<img class="pv-photo-img" src="${img.getAttribute('data-src')}">`;});
+      }
+      body+=`</div>`;
     });
+    body+=`</div>`;
   });
 
   var sc=sigData[cfg.ctrlKey],sl=sigData[cfg.cliKey];
