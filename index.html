@@ -492,16 +492,7 @@ function removeHS(blockId,zoneId){document.getElementById(blockId).remove();if(d
 function setEtat(btn){btn.closest('.hs-etat-opts').querySelectorAll('.etat-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
 async function saveToGallery(src, filename) {
   try {
-    // Méthode 1 : Web Share API (iOS/Android natif - sauvegarde dans la galerie)
-    if (navigator.canShare) {
-      const blob = await (await fetch(src)).blob();
-      const file = new File([blob], filename || ('ADP_Roissy_' + Date.now() + '.jpg'), {type: 'image/jpeg'});
-      if (navigator.canShare({files: [file]})) {
-        await navigator.share({files: [file], title: 'Photo ADP Roissy'});
-        return;
-      }
-    }
-    // Méthode 2 : téléchargement direct (Android Chrome)
+    // Téléchargement direct → va dans le dossier Téléchargements/Galerie sur Android
     var a = document.createElement('a');
     a.href = src;
     a.download = filename || ('ADP_Roissy_' + Date.now() + '.jpg');
@@ -887,16 +878,25 @@ function doDownload(form){
 
     showToast('⏳ Génération du PDF...');
 
-    // Utiliser doPrint pour remplir le printview (avec couverture colorée + layout 2 colonnes)
+    // Remplir le printview avec doPrint (couverture colorée + layout 2 colonnes)
     doPrint(form, false);
 
     var printview=document.getElementById('printview');
 
+    // RENDRE VISIBLE le temps de la capture (sinon html2canvas capture du vide)
+    printview.style.display='block';
+    printview.style.position='fixed';
+    printview.style.left='-9999px';
+    printview.style.top='0';
+    printview.style.width='794px';
+    printview.style.background='white';
+    printview.style.zIndex='-1';
+
     setTimeout(function(){
       var{jsPDF}=window.jspdf;
       var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-      var pageW=210,pageH=297;
       var scale=2;
+      var pageHpx=Math.round(1123*scale);
 
       html2canvas(printview,{
         scale:scale,
@@ -906,8 +906,15 @@ function doDownload(form){
         width:794,
         windowWidth:794
       }).then(function(canvas){
+        // Cacher printview après capture
+        printview.style.display='none';
+        printview.style.position='';
+        printview.style.left='';
+        printview.style.top='';
+        printview.style.width='';
+        printview.style.zIndex='';
+
         var totalH=canvas.height;
-        var pageHpx=Math.round(1123*scale);
         var pages=Math.ceil(totalH/pageHpx);
         for(var i=0;i<pages;i++){
           if(i>0)pdf.addPage();
@@ -921,7 +928,7 @@ function doDownload(form){
           ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
           ctx.drawImage(canvas,0,srcY,canvas.width,srcH,0,0,canvas.width,srcH);
           var imgData=pageCanvas.toDataURL('image/jpeg',0.92);
-          pdf.addImage(imgData,'JPEG',0,0,pageW,pageH);
+          pdf.addImage(imgData,'JPEG',0,0,210,297);
         }
         pdf.save(fileName+'.pdf');
         showToast('✅ PDF téléchargé ! 📧 Envoi mail...');
@@ -955,8 +962,11 @@ function doDownload(form){
             var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
             showToast('✅ PDF téléchargé · ⚠️ Mail: '+msg);
           });
-      }).catch(function(e){showToast('Erreur PDF: '+e.message);});
-    },600);
+      }).catch(function(e){
+        printview.style.display='none';
+        showToast('Erreur PDF: '+e.message);
+      });
+    },800);
 
   }catch(e){showToast('Erreur: '+e.message);}
 }
