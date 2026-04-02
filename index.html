@@ -685,28 +685,28 @@ function buildReportHTML(form){
 
   var css=`
     body{font-family:'Nunito',sans-serif;font-size:11pt;color:#000;margin:0;padding:0;}
-    .pv-content{padding:10mm;max-width:190mm;}
+    .pv-content{padding:8mm 10mm;max-width:100%;box-sizing:border-box;}
     /* ===== PAGE DE GARDE PLEINE PAGE ===== */
-    .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin:0;border:none;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;}
-    .cover-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:2px solid #C8922A;background:#F5F7FA;}
+    .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin:0;border:none;height:auto;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;}
+    .cover-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:3px solid #C8922A;background:#F5F7FA;}
     .cover-eiffage-bars{display:flex;gap:3px;margin-bottom:5px;}
-    .cover-eiffage-bar{height:5px;background:#CC2229;border-radius:1px;}
+    .cover-eiffage-bar{height:6px;background:#CC2229;border-radius:1px;}
     .cover-eiffage-name{font-weight:900;font-size:1.3rem;color:#0B1A2E;letter-spacing:3px;text-transform:uppercase;line-height:1;}
     .cover-eiffage-sub{font-weight:400;font-size:0.5rem;color:#2A6FC4;letter-spacing:3px;text-transform:uppercase;}
-    .cover-fta-circle{width:54px;height:54px;border-radius:50%;border:2px solid #C8922A;display:flex;align-items:center;justify-content:center;background:white;text-align:center;font-weight:900;font-size:1.05rem;color:#0B1A2E;letter-spacing:1px;}
-    .cover-hero{padding:40px 28px 40px;display:flex;flex-direction:column;justify-content:flex-start;}
+    .cover-fta-circle{width:60px;height:60px;border-radius:50%;border:3px solid #C8922A;display:flex;align-items:center;justify-content:center;background:white;text-align:center;font-weight:900;font-size:1.1rem;color:#0B1A2E;letter-spacing:1px;box-shadow:0 0 0 1px #C8922A;}
+    .cover-hero{padding:20px 28px 16px;display:flex;flex-direction:column;justify-content:flex-start;}
     .cover-tag{font-size:0.65rem;font-weight:800;letter-spacing:4px;color:#C8922A;text-transform:uppercase;margin-bottom:12px;}
     .cover-title{font-weight:900;font-size:5.5rem;line-height:0.88;color:#0B1A2E;text-transform:uppercase;letter-spacing:-1px;margin-bottom:24px;}
     .cover-badge{display:inline-block;align-self:flex-start;background:#0B1A2E;color:#C8922A;font-weight:800;font-size:0.7rem;letter-spacing:5px;padding:6px 14px;margin-top:8px;}
     .cover-client{margin:0 28px 24px;background:#0B1A2E;padding:18px 20px;display:flex;align-items:center;gap:14px;}
-    .cover-client-bar{width:4px;height:44px;background:#C8922A;flex-shrink:0;border-radius:2px;}
+    .cover-client-bar{width:5px;height:44px;background:#C8922A;flex-shrink:0;border-radius:2px;}
     .cover-client-label{font-size:0.55rem;letter-spacing:3px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:3px;}
     .cover-client-name{font-weight:900;font-size:1.3rem;letter-spacing:2px;color:white;text-transform:uppercase;}
     .cover-grid{padding:0 28px 24px;}
     .cover-grid-label{font-size:0.55rem;font-weight:800;letter-spacing:3px;color:#999;text-transform:uppercase;margin-bottom:10px;}
     .cover-grid-cells{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;}
     .cover-cell{padding:28px 6px;text-align:center;position:relative;}
-    .cover-cell-accent{position:absolute;bottom:0;left:0;right:0;height:3px;}
+    .cover-cell-accent{position:absolute;bottom:0;left:0;right:0;height:4px;}
     .cover-cell-sublabel{font-size:0.45rem;letter-spacing:2px;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:4px;}
     .cover-cell-name{font-weight:900;font-size:0.85rem;letter-spacing:1px;color:white;text-transform:uppercase;}
     .cover-band{margin:0 28px 24px;display:flex;}
@@ -725,12 +725,12 @@ function buildReportHTML(form){
     .pv-meta{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin:10px 0 16px;font-size:10pt;line-height:1.9;}.pv-meta p{margin:0;}
     .pv-zone-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:16px 0 10px;background:#f9f9f9;}
     /* GRILLE 2 COLONNES pour les blocs */
-    .pv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin:0;}
-    .pv-col{break-inside:avoid;}
+    .pv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 10px;margin:0;break-inside:avoid;}
+    .pv-col{break-inside:avoid;page-break-inside:avoid;overflow:hidden;}
     .pv-item-label{font-weight:700;font-size:10pt;}.pv-item-val{font-size:10pt;}
     .pv-etat{font-weight:700;font-size:10pt;margin:2px 0 6px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
     .pv-photo-label{font-weight:700;font-size:10pt;margin:6px 0 4px;}
-    .pv-photo-img{display:block;width:100%;max-width:85mm;height:auto;border:1px solid #ccc;margin-bottom:10px;}
+    .pv-photo-img{display:block;width:100%;max-width:100%;height:auto;max-height:80mm;object-fit:contain;border:1px solid #ccc;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid;}
     .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:24px 0 14px;background:#f9f9f9;}
     .pv-sig-label{font-weight:700;font-size:10pt;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
     .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}
@@ -876,96 +876,126 @@ function doDownload(form){
     var cli=document.getElementById('val-'+cfg.cliKey).textContent;
     var fileName='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+d.replace(/\//g,'-');
 
-    showToast('⏳ Génération du PDF...');
+    showToast('\u23f3 G\xe9n\xe9ration du PDF...');
 
-    // Remplir le printview avec doPrint (couverture colorée + layout 2 colonnes)
-    doPrint(form, false);
+    // Utiliser buildReportHTML pour avoir un rendu isolé à 794px (grille 2 colonnes)
+    var report=buildReportHTML(form);
 
-    var printview=document.getElementById('printview');
+    // Créer un iframe isolé hors écran
+    var iframe=document.createElement('iframe');
+    iframe.style.cssText='position:fixed;left:-9999px;top:0;width:794px;height:1px;border:none;z-index:-1;';
+    document.body.appendChild(iframe);
 
-    // RENDRE VISIBLE le temps de la capture (sinon html2canvas capture du vide)
-    printview.style.display='block';
-    printview.style.position='fixed';
-    printview.style.left='-9999px';
-    printview.style.top='0';
-    printview.style.width='794px';
-    printview.style.background='white';
-    printview.style.zIndex='-1';
+    var iDoc=iframe.contentDocument||iframe.contentWindow.document;
+    iDoc.open();
+    iDoc.write(report.fullHTML);
+    iDoc.close();
 
+    // Attendre le rendu complet (images + polices)
     setTimeout(function(){
-      var{jsPDF}=window.jspdf;
-      var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-      var scale=2;
-      var pageHpx=Math.round(1123*scale);
+      var iBody=iDoc.body;
+      iframe.style.height=iBody.scrollHeight+'px';
 
-      html2canvas(printview,{
-        scale:scale,
-        useCORS:true,
-        allowTaint:true,
-        logging:false,
-        width:794,
-        windowWidth:794
-      }).then(function(canvas){
-        // Cacher printview après capture
-        printview.style.display='none';
-        printview.style.position='';
-        printview.style.left='';
-        printview.style.top='';
-        printview.style.width='';
-        printview.style.zIndex='';
+      setTimeout(function(){
+        var{jsPDF}=window.jspdf;
+        var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+        var scale=3;
+        var pageHpx=Math.round(1123*scale);
 
-        var totalH=canvas.height;
-        var pages=Math.ceil(totalH/pageHpx);
-        for(var i=0;i<pages;i++){
-          if(i>0)pdf.addPage();
-          var srcY=i*pageHpx;
-          var srcH=Math.min(pageHpx,totalH-srcY);
-          var pageCanvas=document.createElement('canvas');
-          pageCanvas.width=canvas.width;
-          pageCanvas.height=pageHpx;
-          var ctx=pageCanvas.getContext('2d');
-          ctx.fillStyle='#fff';
-          ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
-          ctx.drawImage(canvas,0,srcY,canvas.width,srcH,0,0,canvas.width,srcH);
-          var imgData=pageCanvas.toDataURL('image/jpeg',0.92);
-          pdf.addImage(imgData,'JPEG',0,0,210,297);
-        }
-        pdf.save(fileName+'.pdf');
-        showToast('✅ PDF téléchargé ! 📧 Envoi mail...');
+        html2canvas(iBody,{
+          scale:scale,
+          useCORS:true,
+          allowTaint:true,
+          logging:false,
+          width:794,
+          windowWidth:794,
+          scrollX:0,
+          scrollY:0
+        }).then(function(canvas){
+          document.body.removeChild(iframe);
 
-        // ENVOI MAIL
-        var summaryTxt=buildTextSummary(form);
-        var summaryHTML=summaryTxt
-          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-          .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
-        var params={
-          terminal:cfg.title,
-          controleur:ctrl,
-          client:cli,
-          date:d+' à '+t,
-          to_email:'fta.nett@gmail.com',
-          name:'FTA Nettoyage App',
-          nom:ctrl,
-          temps:d+' '+t,
-          email:'fta.nett@gmail.com',
-          message:'<b>RAPPORT DE CONTRÔLE – ADP ROISSY</b><br><br>'
-                 +'<b>Terminal :</b> '+cfg.title+'<br>'
-                 +'<b>Date :</b> '+d+' à '+t+'<br>'
-                 +'<b>Contrôleur :</b> '+ctrl+'<br>'
-                 +'<b>Client :</b> '+cli+'<br><br>'
-                 +'<b>ZONES CONTRÔLÉES :</b><br>'+summaryHTML
-                 +'<br><br><i>Rapport PDF généré et téléchargé.</i>'
-        };
-        emailjs.send('service_915ke0p','template_55844q',params)
-          .then(function(){showToast('✅ PDF téléchargé + 📧 Mail envoyé !');})
-          .catch(function(err){
-            var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
-            showToast('✅ PDF téléchargé · ⚠️ Mail: '+msg);
+          var totalH=canvas.height;
+
+          // Coupure intelligente : éviter de couper dans une photo ou un bloc
+          var allBlocks=iBody.querySelectorAll('.pv-col,.pv-zone-title,.pv-sig-title,.pv-photo-img');
+          var bodyRect=iBody.getBoundingClientRect();
+          var noCutZones=[];
+          allBlocks.forEach(function(el){
+            var r=el.getBoundingClientRect();
+            var top=Math.round((r.top-bodyRect.top)*scale);
+            var bot=Math.round((r.bottom-bodyRect.top)*scale);
+            if(bot>top) noCutZones.push({top:top,bot:bot});
           });
-      }).catch(function(e){
-        printview.style.display='none';
-        showToast('Erreur PDF: '+e.message);
-      });
+
+          var pageStarts=[0];
+          var y=0;
+          while(y+pageHpx<totalH){
+            var ideal=y+pageHpx;
+            var cut=ideal;
+            for(var z=0;z<noCutZones.length;z++){
+              var zone=noCutZones[z];
+              if(ideal>zone.top && ideal<zone.bot){
+                cut=zone.top>y+20?zone.top:zone.bot;
+                break;
+              }
+            }
+            if(cut<=y) cut=ideal;
+            pageStarts.push(cut);
+            y=cut;
+          }
+
+          for(var i=0;i<pageStarts.length;i++){
+            if(i>0) pdf.addPage();
+            var srcY=pageStarts[i];
+            var srcH=i<pageStarts.length-1?(pageStarts[i+1]-srcY):Math.min(pageHpx,totalH-srcY);
+            if(srcH<=0) continue;
+            var pageCanvas=document.createElement('canvas');
+            pageCanvas.width=canvas.width;
+            pageCanvas.height=pageHpx;
+            var ctx=pageCanvas.getContext('2d');
+            ctx.fillStyle='#fff';
+            ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
+            ctx.drawImage(canvas,0,srcY,canvas.width,srcH,0,0,canvas.width,srcH);
+            var imgData=pageCanvas.toDataURL('image/jpeg',0.92);
+            pdf.addImage(imgData,'JPEG',0,0,210,297);
+          }
+          pdf.save(fileName+'.pdf');
+          showToast('\u2705 PDF t\xe9l\xe9charg\xe9 ! \ud83d\udce7 Envoi mail...');
+
+          // ENVOI MAIL
+          var summaryTxt=buildTextSummary(form);
+          var summaryHTML=summaryTxt
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
+          var params={
+            terminal:cfg.title,
+            controleur:ctrl,
+            client:cli,
+            date:d+' \xe0 '+t,
+            to_email:'fta.nett@gmail.com',
+            name:'FTA Nettoyage App',
+            nom:ctrl,
+            temps:d+' '+t,
+            email:'fta.nett@gmail.com',
+            message:'<b>RAPPORT DE CONTR\xd4LE \u2013 ADP ROISSY</b><br><br>'
+                   +'<b>Terminal :</b> '+cfg.title+'<br>'
+                   +'<b>Date :</b> '+d+' \xe0 '+t+'<br>'
+                   +'<b>Contr\xf4leur :</b> '+ctrl+'<br>'
+                   +'<b>Client :</b> '+cli+'<br><br>'
+                   +'<b>ZONES CONTR\xd4L\xc9ES :</b><br>'+summaryHTML
+                   +'<br><br><i>Rapport PDF g\xe9n\xe9r\xe9 et t\xe9l\xe9charg\xe9.</i>'
+          };
+          emailjs.send('service_915ke0p','template_55844q',params)
+            .then(function(){showToast('\u2705 PDF t\xe9l\xe9charg\xe9 + \ud83d\udce7 Mail envoy\xe9 !');})
+            .catch(function(err){
+              var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
+              showToast('\u2705 PDF t\xe9l\xe9charg\xe9 \xb7 \u26a0\ufe0f Mail: '+msg);
+            });
+        }).catch(function(e){
+          if(document.body.contains(iframe)) document.body.removeChild(iframe);
+          showToast('Erreur PDF: '+e.message);
+        });
+      },600);
     },800);
 
   }catch(e){showToast('Erreur: '+e.message);}
