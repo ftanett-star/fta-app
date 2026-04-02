@@ -12,6 +12,7 @@
 :root{--green:#3DB84A;--green-light:#EBF9ED;--red:#E53935;--red-light:#FFF0F0;--blue:#1A2A4A;--blue2:#2B4275;--text:#1A2A4A;--muted:#7A8AA0;--border:#E5EAF0;--bg:#F4F6FA;--white:#fff;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh;}
+@media print{body{max-width:100% !important;margin:0 !important;}}
 .page{display:none;}.page.active{display:block;}
 .hdr{background:var(--white);display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06);}
 .hdr-back{background:none;border:none;cursor:pointer;color:var(--green);font-size:28px;padding:0 10px 0 0;font-family:'Nunito',sans-serif;line-height:1;}
@@ -697,7 +698,7 @@ function buildReportHTML(form){
 
   var css=`
     body{font-family:'Nunito',sans-serif;font-size:11pt;color:#000;margin:0;padding:0;}
-    .pv-content{padding:10mm;max-width:800px;}
+    .pv-content{padding:10mm;max-width:190mm;}
     /* ===== PAGE DE GARDE PLEINE PAGE ===== */
     .cover-wrap{page-break-after:always;background:#F5F7FA;padding:0;margin:0;border:none;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;}
     .cover-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 18px;border-bottom:2px solid #C8922A;background:#F5F7FA;}
@@ -739,7 +740,7 @@ function buildReportHTML(form){
     .pv-item{margin:10px 0;}.pv-item-label{font-weight:700;}.pv-item-val{font-size:11pt;}
     .pv-etat{font-weight:700;margin:3px 0 8px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
     /* ===== PHOTOS NETTES ET GRANDES ===== */
-    .pv-photo-label{font-weight:700;margin:8px 0 5px;}.pv-photo-img{display:block;width:100%;max-width:480px;height:auto;border:1px solid #ccc;margin-bottom:14px;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;}
+    .pv-photo-label{font-weight:700;margin:8px 0 5px;}.pv-photo-img{display:block;width:100%;max-width:160mm;height:auto;border:1px solid #ccc;margin-bottom:14px;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;}
     .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:12pt;font-weight:700;margin:24px 0 14px;}
     .pv-sig-label{font-weight:700;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
     .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}
