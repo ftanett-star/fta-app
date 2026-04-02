@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ADP Roissy – Contrôle des Éclairages de Sécurité</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -876,51 +878,93 @@ function doDownload(form){
   try{
     var report=buildReportHTML(form);
     var cfg=formConfig[form];
+    var fileName='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+report.d.replace(/\//g,'-');
 
-    // 1. TÉLÉCHARGEMENT
-    var blob=new Blob([report.fullHTML],{type:'text/html;charset=utf-8'});
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement('a');
-    a.href=url;a.download='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+report.d.replace(/\//g,'-')+'.html';
-    a.style.display='none';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-    setTimeout(function(){URL.revokeObjectURL(url);},1000);
-    showToast('📥 Téléchargement + 📧 Envoi mail en cours...');
+    showToast('⏳ Génération du PDF en cours...');
 
-    // 2. ENVOI PAR MAIL via EmailJS
-    var summaryTxt = buildTextSummary(form);
-    var summaryHTML = summaryTxt
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
+    // Créer un iframe caché pour rendre le HTML du rapport
+    var iframe=document.createElement('iframe');
+    iframe.style.cssText='position:fixed;left:-9999px;top:-9999px;width:794px;height:1123px;border:none;';
+    document.body.appendChild(iframe);
 
-    var params={
-      terminal:   cfg.title,
-      controleur: report.ctrl,
-      client:     report.cli,
-      date:       report.d+' à '+report.t,
-      to_email:   'fta.nett@gmail.com',
-      name:       'FTA Nettoyage App',
-      nom:        report.ctrl,
-      temps:      report.d+' '+report.t,
-      email:      'fta.nett@gmail.com',
-      message:    '<b>RAPPORT DE CONTRÔLE – ADP ROISSY</b><br><br>'
-                 +'<b>Terminal :</b> '+cfg.title+'<br>'
-                 +'<b>Date :</b> '+report.d+' à '+report.t+'<br>'
-                 +'<b>Contrôleur :</b> '+report.ctrl+'<br>'
-                 +'<b>Client :</b> '+report.cli+'<br><br>'
-                 +'<b>ZONES CONTRÔLÉES :</b><br>'
-                 +summaryHTML
-                 +'<br><br><i>Fichier HTML complet téléchargé localement.</i>'
+    iframe.onload=function(){
+      var iDoc=iframe.contentDocument||iframe.contentWindow.document;
+      // Attendre que les images et polices soient chargées
+      setTimeout(function(){
+        var pages=iDoc.querySelectorAll('.pdf-page');
+        if(!pages||pages.length===0){
+          // Pas de pages séparées, capturer tout le body
+          pages=[iDoc.body];
+        }
+        var { jsPDF }=window.jspdf;
+        var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+        var pageW=794,pageH=1123;
+        var promises=[];
+        pages.forEach(function(page,i){
+          promises.push(
+            html2canvas(page,{
+              scale:2,
+              useCORS:true,
+              allowTaint:true,
+              width:pageW,
+              windowWidth:pageW,
+              logging:false
+            }).then(function(canvas){
+              return {canvas:canvas,index:i};
+            })
+          );
+        });
+        Promise.all(promises).then(function(results){
+          results.sort(function(a,b){return a.index-b.index;});
+          results.forEach(function(res,i){
+            if(i>0)pdf.addPage();
+            var imgData=res.canvas.toDataURL('image/jpeg',0.92);
+            pdf.addImage(imgData,'JPEG',0,0,210,297);
+          });
+          pdf.save(fileName+'.pdf');
+          document.body.removeChild(iframe);
+          showToast('✅ PDF téléchargé ! 📧 Envoi mail...');
+
+          // ENVOI PAR MAIL via EmailJS
+          var summaryTxt=buildTextSummary(form);
+          var summaryHTML=summaryTxt
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
+          var params={
+            terminal:   cfg.title,
+            controleur: report.ctrl,
+            client:     report.cli,
+            date:       report.d+' à '+report.t,
+            to_email:   'fta.nett@gmail.com',
+            name:       'FTA Nettoyage App',
+            nom:        report.ctrl,
+            temps:      report.d+' '+report.t,
+            email:      'fta.nett@gmail.com',
+            message:    '<b>RAPPORT DE CONTRÔLE – ADP ROISSY</b><br><br>'
+                       +'<b>Terminal :</b> '+cfg.title+'<br>'
+                       +'<b>Date :</b> '+report.d+' à '+report.t+'<br>'
+                       +'<b>Contrôleur :</b> '+report.ctrl+'<br>'
+                       +'<b>Client :</b> '+report.cli+'<br><br>'
+                       +'<b>ZONES CONTRÔLÉES :</b><br>'
+                       +summaryHTML
+                       +'<br><br><i>Rapport PDF généré et téléchargé.</i>'
+          };
+          emailjs.send('service_915ke0p','template_55844q',params)
+            .then(function(){showToast('✅ PDF téléchargé + 📧 Mail envoyé !');})
+            .catch(function(err){
+              var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
+              showToast('✅ PDF téléchargé · ⚠️ Mail: '+msg);
+            });
+        }).catch(function(e){
+          document.body.removeChild(iframe);
+          showToast('Erreur PDF: '+e.message);
+        });
+      },800);
     };
 
-    emailjs.send('service_915ke0p','template_55844q',params)
-      .then(function(){
-        showToast('✅ Téléchargé + 📧 Mail envoyé à fta.nett@gmail.com !');
-      })
-      .catch(function(err){
-        var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
-        showToast('📥 Téléchargé · ⚠️ Mail: '+msg);
-      });
+    // Charger le HTML du rapport dans l'iframe avec pages bien délimitées
+    var htmlAvecPages=report.fullHTML.replace('</body>','<style>.pdf-page{width:794px;min-height:1123px;page-break-after:always;box-sizing:border-box;padding:20px;background:white;}</style></body>');
+    iframe.srcdoc=htmlAvecPages;
 
   }catch(e){showToast('Erreur: '+e.message);}
 }
