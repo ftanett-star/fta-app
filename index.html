@@ -304,8 +304,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <button class="fab" onclick="submit('t1')">✅</button>
   <div class="bbar">
     <button class="bbtn" onclick="goHome()">🏠<br>Accueil</button>
-    <button class="bbtn green" onclick="doPrint('t1')">🖨️<br>Imprimer</button>
-    <button class="bbtn" style="background:#0a7d3e;color:white;" onclick="doDownload('t1')">📥<br>Télécharger</button>
+    <button class="bbtn green" onclick="doDownload('t1')">📥<br>Télécharger PDF</button>
   </div>
 </div>
 
@@ -333,8 +332,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <button class="fab" onclick="submit('t3')">✅</button>
   <div class="bbar">
     <button class="bbtn" onclick="goHome()">🏠<br>Accueil</button>
-    <button class="bbtn green" onclick="doPrint('t3')">🖨️<br>Imprimer</button>
-    <button class="bbtn" style="background:#0a7d3e;color:white;" onclick="doDownload('t3')">📥<br>Télécharger</button>
+    <button class="bbtn green" onclick="doDownload('t3')">📥<br>Télécharger PDF</button>
   </div>
 </div>
 
@@ -370,8 +368,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
   <button class="fab" onclick="submit('nd')">✅</button>
   <div class="bbar">
     <button class="bbtn" onclick="goHome()">🏠<br>Accueil</button>
-    <button class="bbtn green" onclick="doPrint('nd')">🖨️<br>Imprimer</button>
-    <button class="bbtn" style="background:#0a7d3e;color:white;" onclick="doDownload('nd')">📥<br>Télécharger</button>
+    <button class="bbtn green" onclick="doDownload('nd')">📥<br>Télécharger PDF</button>
   </div>
 </div>
 
@@ -657,20 +654,23 @@ function doPrint(form, printOnly){
     const blocks=document.getElementById('hs-'+zone.id).querySelectorAll('.hs-block');
     if(blocks.length===0)return;
     html+=`<div class="pv-zone-title">${zone.label}</div>`;
+    html+=`<div class="pv-grid">`;
     blocks.forEach((block)=>{
       const zoneVal=block.querySelector('.hs-input')?.value||'';
       const etatBtn=block.querySelector('.etat-btn.sel');
       const etat=etatBtn?(etatBtn.classList.contains('conforme')?'CONFORME':'NON CONFORME'):'';
       const etatClass=etat==='CONFORME'?'ok':'ko';
       const imgs=block.querySelectorAll('.timg');
-      if(imgs.length>0){
-        html+=`<div class="pv-item"><div class="pv-photo-label">Photo :</div>`;
-        imgs.forEach(img=>{html+=`<img class="pv-photo-img" src="${img.getAttribute('data-src')}">`;});
-        html+=`</div>`;
-      }
-      if(zoneVal){html+=`<div class="pv-item"><span class="pv-item-label">ECLAIRAGE : </span><span class="pv-item-val">${zoneVal}</span></div>`;}
+      html+=`<div class="pv-col">`;
+      html+=`<span class="pv-item-label">ECLAIRAGE : </span><span class="pv-item-val">${zoneVal}</span>`;
       if(etat){html+=`<div class="pv-etat ${etatClass}">ETAT : ${etat}</div>`;}
+      if(imgs.length>0){
+        html+=`<div class="pv-photo-label">Photo :</div>`;
+        imgs.forEach(img=>{html+=`<img class="pv-photo-img" src="${img.getAttribute('data-src')}">`;});
+      }
+      html+=`</div>`;
     });
+    html+=`</div>`;
   });
 
   const sc=sigData[cfg.ctrlKey],sl=sigData[cfg.cliKey];
@@ -879,95 +879,84 @@ function editCoverDate() {
 }
 function doDownload(form){
   try{
-    var report=buildReportHTML(form);
     var cfg=formConfig[form];
-    var fileName='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+report.d.replace(/\//g,'-');
+    var{d,t}=getDT();
+    var ctrl=document.getElementById('val-'+cfg.ctrlKey).textContent;
+    var cli=document.getElementById('val-'+cfg.cliKey).textContent;
+    var fileName='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+d.replace(/\//g,'-');
 
-    showToast('⏳ Génération du PDF en cours...');
+    showToast('⏳ Génération du PDF...');
 
-    // Créer un iframe caché pour rendre le HTML du rapport
-    var iframe=document.createElement('iframe');
-    iframe.style.cssText='position:fixed;left:-9999px;top:-9999px;width:794px;height:1123px;border:none;';
-    document.body.appendChild(iframe);
+    // Utiliser doPrint pour remplir le printview (avec couverture colorée + layout 2 colonnes)
+    doPrint(form, false);
 
-    iframe.onload=function(){
-      var iDoc=iframe.contentDocument||iframe.contentWindow.document;
-      // Attendre que les images et polices soient chargées
-      setTimeout(function(){
-        var pages=iDoc.querySelectorAll('.pdf-page');
-        if(!pages||pages.length===0){
-          // Pas de pages séparées, capturer tout le body
-          pages=[iDoc.body];
+    var printview=document.getElementById('printview');
+
+    setTimeout(function(){
+      var{jsPDF}=window.jspdf;
+      var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+      var pageW=210,pageH=297;
+      var scale=2;
+
+      html2canvas(printview,{
+        scale:scale,
+        useCORS:true,
+        allowTaint:true,
+        logging:false,
+        width:794,
+        windowWidth:794
+      }).then(function(canvas){
+        var totalH=canvas.height;
+        var pageHpx=Math.round(1123*scale);
+        var pages=Math.ceil(totalH/pageHpx);
+        for(var i=0;i<pages;i++){
+          if(i>0)pdf.addPage();
+          var srcY=i*pageHpx;
+          var srcH=Math.min(pageHpx,totalH-srcY);
+          var pageCanvas=document.createElement('canvas');
+          pageCanvas.width=canvas.width;
+          pageCanvas.height=pageHpx;
+          var ctx=pageCanvas.getContext('2d');
+          ctx.fillStyle='#fff';
+          ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
+          ctx.drawImage(canvas,0,srcY,canvas.width,srcH,0,0,canvas.width,srcH);
+          var imgData=pageCanvas.toDataURL('image/jpeg',0.92);
+          pdf.addImage(imgData,'JPEG',0,0,pageW,pageH);
         }
-        var { jsPDF }=window.jspdf;
-        var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-        var pageW=794,pageH=1123;
-        var promises=[];
-        pages.forEach(function(page,i){
-          promises.push(
-            html2canvas(page,{
-              scale:2,
-              useCORS:true,
-              allowTaint:true,
-              width:pageW,
-              windowWidth:pageW,
-              logging:false
-            }).then(function(canvas){
-              return {canvas:canvas,index:i};
-            })
-          );
-        });
-        Promise.all(promises).then(function(results){
-          results.sort(function(a,b){return a.index-b.index;});
-          results.forEach(function(res,i){
-            if(i>0)pdf.addPage();
-            var imgData=res.canvas.toDataURL('image/jpeg',0.92);
-            pdf.addImage(imgData,'JPEG',0,0,210,297);
+        pdf.save(fileName+'.pdf');
+        showToast('✅ PDF téléchargé ! 📧 Envoi mail...');
+
+        // ENVOI MAIL
+        var summaryTxt=buildTextSummary(form);
+        var summaryHTML=summaryTxt
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
+        var params={
+          terminal:cfg.title,
+          controleur:ctrl,
+          client:cli,
+          date:d+' à '+t,
+          to_email:'fta.nett@gmail.com',
+          name:'FTA Nettoyage App',
+          nom:ctrl,
+          temps:d+' '+t,
+          email:'fta.nett@gmail.com',
+          message:'<b>RAPPORT DE CONTRÔLE – ADP ROISSY</b><br><br>'
+                 +'<b>Terminal :</b> '+cfg.title+'<br>'
+                 +'<b>Date :</b> '+d+' à '+t+'<br>'
+                 +'<b>Contrôleur :</b> '+ctrl+'<br>'
+                 +'<b>Client :</b> '+cli+'<br><br>'
+                 +'<b>ZONES CONTRÔLÉES :</b><br>'+summaryHTML
+                 +'<br><br><i>Rapport PDF généré et téléchargé.</i>'
+        };
+        emailjs.send('service_915ke0p','template_55844q',params)
+          .then(function(){showToast('✅ PDF téléchargé + 📧 Mail envoyé !');})
+          .catch(function(err){
+            var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
+            showToast('✅ PDF téléchargé · ⚠️ Mail: '+msg);
           });
-          pdf.save(fileName+'.pdf');
-          document.body.removeChild(iframe);
-          showToast('✅ PDF téléchargé ! 📧 Envoi mail...');
-
-          // ENVOI PAR MAIL via EmailJS
-          var summaryTxt=buildTextSummary(form);
-          var summaryHTML=summaryTxt
-            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-            .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
-          var params={
-            terminal:   cfg.title,
-            controleur: report.ctrl,
-            client:     report.cli,
-            date:       report.d+' à '+report.t,
-            to_email:   'fta.nett@gmail.com',
-            name:       'FTA Nettoyage App',
-            nom:        report.ctrl,
-            temps:      report.d+' '+report.t,
-            email:      'fta.nett@gmail.com',
-            message:    '<b>RAPPORT DE CONTRÔLE – ADP ROISSY</b><br><br>'
-                       +'<b>Terminal :</b> '+cfg.title+'<br>'
-                       +'<b>Date :</b> '+report.d+' à '+report.t+'<br>'
-                       +'<b>Contrôleur :</b> '+report.ctrl+'<br>'
-                       +'<b>Client :</b> '+report.cli+'<br><br>'
-                       +'<b>ZONES CONTRÔLÉES :</b><br>'
-                       +summaryHTML
-                       +'<br><br><i>Rapport PDF généré et téléchargé.</i>'
-          };
-          emailjs.send('service_915ke0p','template_55844q',params)
-            .then(function(){showToast('✅ PDF téléchargé + 📧 Mail envoyé !');})
-            .catch(function(err){
-              var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
-              showToast('✅ PDF téléchargé · ⚠️ Mail: '+msg);
-            });
-        }).catch(function(e){
-          document.body.removeChild(iframe);
-          showToast('Erreur PDF: '+e.message);
-        });
-      },800);
-    };
-
-    // Charger le HTML du rapport dans l'iframe avec pages bien délimitées
-    var htmlAvecPages=report.fullHTML.replace('</body>','<style>.pdf-page{width:794px;min-height:1123px;page-break-after:always;box-sizing:border-box;padding:20px;background:white;}</style></body>');
-    iframe.srcdoc=htmlAvecPages;
+      }).catch(function(e){showToast('Erreur PDF: '+e.message);});
+    },600);
 
   }catch(e){showToast('Erreur: '+e.message);}
 }
