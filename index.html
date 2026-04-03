@@ -730,7 +730,7 @@ function buildReportHTML(form){
     .pv-item-label{font-weight:700;font-size:10pt;}.pv-item-val{font-size:10pt;}
     .pv-etat{font-weight:700;font-size:10pt;margin:2px 0 6px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
     .pv-photo-label{font-weight:700;font-size:10pt;margin:6px 0 4px;}
-    .pv-photo-img{display:block;width:auto;max-width:60%;height:auto;max-height:130px;object-fit:contain;border:1px solid #ccc;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid;}
+    .pv-photo-img{display:block;width:auto;max-width:35%;height:auto;max-height:80px;object-fit:cover;border:1px solid #ccc;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid;}
     .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:24px 0 14px;background:#f9f9f9;}
     .pv-sig-label{font-weight:700;font-size:10pt;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
     .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}
@@ -876,128 +876,66 @@ function doDownload(form){
     var cli=document.getElementById('val-'+cfg.cliKey).textContent;
     var fileName='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+d.replace(/\//g,'-');
 
-    showToast('\u23f3 G\xe9n\xe9ration du PDF...');
-
-    // Utiliser buildReportHTML pour avoir un rendu isolé à 794px (grille 2 colonnes)
+    showToast('\u23f3 Génération du PDF...');
     var report=buildReportHTML(form);
+    var{jsPDF}=window.jspdf;
+    var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    var pageW=210,pageH=297,margin=10,contentW=190,scale=2;
 
-    // Créer un iframe isolé hors écran
     var iframe=document.createElement('iframe');
-    iframe.style.cssText='position:fixed;left:-9999px;top:0;width:794px;height:1px;border:none;z-index:-1;';
+    iframe.style.cssText='position:fixed;left:-9999px;top:0;width:794px;height:10px;border:none;visibility:hidden;';
     document.body.appendChild(iframe);
-
     var iDoc=iframe.contentDocument||iframe.contentWindow.document;
-    iDoc.open();
-    iDoc.write(report.fullHTML);
-    iDoc.close();
+    iDoc.open();iDoc.write(report.fullHTML);iDoc.close();
 
-    // Attendre le rendu complet (images + polices)
     setTimeout(function(){
-      var iBody=iDoc.body;
-      iframe.style.height=iBody.scrollHeight+'px';
-
+      iframe.style.height=iDoc.body.scrollHeight+'px';
       setTimeout(function(){
-        var{jsPDF}=window.jspdf;
-        var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-        var scale=3;
-        var pageHpx=Math.round(1123*scale);
+        var iBody=iDoc.body;
+        var sections=iBody.querySelectorAll('.cover-wrap,.pv-logo-bar,.pv-main-title,.pv-meta,.pv-zone-title,.pv-col,.pv-sig-title,.pv-sig-label,.pv-sig-img,.pv-footer');
+        var curY=margin,pageNum=0,tasks=Array.from(sections);
 
-        html2canvas(iBody,{
-          scale:scale,
-          useCORS:true,
-          allowTaint:true,
-          logging:false,
-          width:794,
-          windowWidth:794,
-          scrollX:0,
-          scrollY:0
-        }).then(function(canvas){
-          document.body.removeChild(iframe);
+        function processNext(i){
+          if(i>=tasks.length){
+            pdf.save(fileName+'.pdf');
+            if(document.body.contains(iframe))document.body.removeChild(iframe);
+            showToast('\u2705 PDF téléchargé ! Envoi mail...');
+            var summaryTxt=buildTextSummary(form);
+            var summaryHTML=summaryTxt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
+            var params={terminal:cfg.title,controleur:ctrl,client:cli,date:d+' à '+t,to_email:'fta.nett@gmail.com',name:'FTA Nettoyage App',nom:ctrl,temps:d+' '+t,email:'fta.nett@gmail.com',message:'<b>RAPPORT DE CONTRÔLE – ADP ROISSY</b><br><br><b>Terminal :</b> '+cfg.title+'<br><b>Date :</b> '+d+' à '+t+'<br><b>Contrôleur :</b> '+ctrl+'<br><b>Client :</b> '+cli+'<br><br><b>ZONES CONTRÔLÉES :</b><br>'+summaryHTML+'<br><br><i>Rapport PDF généré et téléchargé.</i>'};
+            emailjs.send('service_915ke0p','template_55844q',params)
+              .then(function(){showToast('\u2705 PDF téléchargé + Mail envoyé !');})
+              .catch(function(err){var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));showToast('\u2705 PDF téléchargé · Mail: '+msg);});
+            return;
+          }
+          var el=tasks[i];
+          if(!el||el.offsetHeight<2){processNext(i+1);return;}
 
-          var totalH=canvas.height;
-
-          // Coupure intelligente : éviter de couper dans une photo ou un bloc
-          var allBlocks=iBody.querySelectorAll('.pv-col,.pv-zone-title,.pv-sig-title,.pv-photo-img');
-          var bodyRect=iBody.getBoundingClientRect();
-          var noCutZones=[];
-          allBlocks.forEach(function(el){
-            var r=el.getBoundingClientRect();
-            var top=Math.round((r.top-bodyRect.top)*scale);
-            var bot=Math.round((r.bottom-bodyRect.top)*scale);
-            if(bot>top) noCutZones.push({top:top,bot:bot});
-          });
-
-          var pageStarts=[0];
-          var y=0;
-          while(y+pageHpx<totalH){
-            var ideal=y+pageHpx;
-            var cut=ideal;
-            for(var z=0;z<noCutZones.length;z++){
-              var zone=noCutZones[z];
-              if(ideal>zone.top && ideal<zone.bot){
-                cut=zone.top>y+20?zone.top:zone.bot;
-                break;
-              }
-            }
-            if(cut<=y) cut=ideal;
-            pageStarts.push(cut);
-            y=cut;
+          if(el.classList.contains('cover-wrap')){
+            if(pageNum>0)pdf.addPage();
+            pageNum++;curY=margin;
+            html2canvas(el,{scale:scale,useCORS:true,allowTaint:true,logging:false,width:el.offsetWidth,windowWidth:794})
+            .then(function(canvas){
+              pdf.addImage(canvas.toDataURL('image/jpeg',0.9),'JPEG',0,0,pageW,pageH);
+              curY=pageH;processNext(i+1);
+            }).catch(function(){processNext(i+1);});
+            return;
           }
 
-          for(var i=0;i<pageStarts.length;i++){
-            if(i>0) pdf.addPage();
-            var srcY=pageStarts[i];
-            var srcH=i<pageStarts.length-1?(pageStarts[i+1]-srcY):Math.min(pageHpx,totalH-srcY);
-            if(srcH<=0) continue;
-            var pageCanvas=document.createElement('canvas');
-            pageCanvas.width=canvas.width;
-            pageCanvas.height=pageHpx;
-            var ctx=pageCanvas.getContext('2d');
-            ctx.fillStyle='#fff';
-            ctx.fillRect(0,0,pageCanvas.width,pageCanvas.height);
-            ctx.drawImage(canvas,0,srcY,canvas.width,srcH,0,0,canvas.width,srcH);
-            var imgData=pageCanvas.toDataURL('image/jpeg',0.92);
-            pdf.addImage(imgData,'JPEG',0,0,210,297);
-          }
-          pdf.save(fileName+'.pdf');
-          showToast('\u2705 PDF t\xe9l\xe9charg\xe9 ! \ud83d\udce7 Envoi mail...');
-
-          // ENVOI MAIL
-          var summaryTxt=buildTextSummary(form);
-          var summaryHTML=summaryTxt
-            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-            .replace(/\n/g,'<br>').replace(/ {2}/g,'&nbsp;&nbsp;');
-          var params={
-            terminal:cfg.title,
-            controleur:ctrl,
-            client:cli,
-            date:d+' \xe0 '+t,
-            to_email:'fta.nett@gmail.com',
-            name:'FTA Nettoyage App',
-            nom:ctrl,
-            temps:d+' '+t,
-            email:'fta.nett@gmail.com',
-            message:'<b>RAPPORT DE CONTR\xd4LE \u2013 ADP ROISSY</b><br><br>'
-                   +'<b>Terminal :</b> '+cfg.title+'<br>'
-                   +'<b>Date :</b> '+d+' \xe0 '+t+'<br>'
-                   +'<b>Contr\xf4leur :</b> '+ctrl+'<br>'
-                   +'<b>Client :</b> '+cli+'<br><br>'
-                   +'<b>ZONES CONTR\xd4L\xc9ES :</b><br>'+summaryHTML
-                   +'<br><br><i>Rapport PDF g\xe9n\xe9r\xe9 et t\xe9l\xe9charg\xe9.</i>'
-          };
-          emailjs.send('service_915ke0p','template_55844q',params)
-            .then(function(){showToast('\u2705 PDF t\xe9l\xe9charg\xe9 + \ud83d\udce7 Mail envoy\xe9 !');})
-            .catch(function(err){
-              var msg=err&&err.text?err.text:(err&&err.status?'Status '+err.status:JSON.stringify(err));
-              showToast('\u2705 PDF t\xe9l\xe9charg\xe9 \xb7 \u26a0\ufe0f Mail: '+msg);
-            });
-        }).catch(function(e){
-          if(document.body.contains(iframe)) document.body.removeChild(iframe);
-          showToast('Erreur PDF: '+e.message);
-        });
-      },600);
-    },800);
-
+          html2canvas(el,{scale:scale,useCORS:true,allowTaint:true,logging:false,width:794,windowWidth:794})
+          .then(function(canvas){
+            if(canvas.height<2){processNext(i+1);return;}
+            var imgH=(canvas.height/canvas.width)*contentW;
+            if(imgH>pageH-margin*2)imgH=pageH-margin*2;
+            if(curY+imgH>pageH-margin){pdf.addPage();pageNum++;curY=margin;}
+            pdf.addImage(canvas.toDataURL('image/jpeg',0.9),'JPEG',margin,curY,contentW,imgH);
+            curY+=imgH+2;
+            processNext(i+1);
+          }).catch(function(){processNext(i+1);});
+        }
+        processNext(0);
+      },800);
+    },600);
   }catch(e){showToast('Erreur: '+e.message);}
 }
 
