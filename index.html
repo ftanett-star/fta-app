@@ -725,12 +725,12 @@ function buildReportHTML(form){
     .pv-meta{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin:10px 0 16px;font-size:10pt;line-height:1.9;}.pv-meta p{margin:0;}
     .pv-zone-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:16px 0 10px;background:#f9f9f9;}
     /* GRILLE 2 COLONNES pour les blocs */
-    .pv-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:0;break-inside:avoid;}
+    .pv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 10px;margin:0;break-inside:avoid;}
     .pv-col{break-inside:avoid;page-break-inside:avoid;overflow:hidden;display:flex;flex-direction:column;}
     .pv-item-label{font-weight:700;font-size:10pt;}.pv-item-val{font-size:10pt;}
     .pv-etat{font-weight:700;font-size:10pt;margin:2px 0 6px;}.pv-etat.ok{color:#2e7d32;}.pv-etat.ko{color:#c62828;}
     .pv-photo-label{font-weight:700;font-size:10pt;margin:6px 0 4px;}
-    .pv-photo-img{display:block;height:90px;width:auto;max-width:100%;object-fit:contain;object-position:left;border:1px solid #ccc;margin-bottom:10px;background:#f9f9f9;}
+    .pv-photo-img{display:block;width:100%;max-width:100%;height:auto;max-height:45mm;object-fit:contain;border:1px solid #ccc;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid;}
     .pv-sig-title{text-align:center;border:1px solid #333;padding:7px;font-size:11pt;font-weight:700;margin:24px 0 14px;background:#f9f9f9;}
     .pv-sig-label{font-weight:700;font-size:10pt;margin-bottom:8px;}.pv-sig-img{height:75px;object-fit:contain;display:block;}
     .pv-footer{text-align:center;font-size:8pt;color:#888;margin-top:20px;padding-top:8px;border-top:1px solid #ddd;}
