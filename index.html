@@ -510,70 +510,113 @@ function addPh(inp,tid,wid){
     saveToGallery(originalURL, fname).then(()=>{
       setTimeout(()=>URL.revokeObjectURL(originalURL), 5000);
     });
-    const r=new FileReader();
-    r.onload=e=>{
+    // Détecter iOS/Safari qui corrige déjà l'EXIF automatiquement
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||
+      (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    if(isIOS){
+      // iOS corrige déjà l'orientation — pas besoin de EXIF
+      const r=new FileReader();
+      r.onload=e=>{
+        compressImgSimple(e.target.result,1200,1200,0.85).then(src=>{
+          const w=document.createElement('div');w.className='twrap';
+          w.innerHTML='<img class="timg" src="'+src+'" data-src="'+src+'"><button class="tremove" onclick="this.parentElement.remove()">×</button>';
+          c.appendChild(w);document.getElementById(wid).style.display='none';
+        });
+      };r.readAsDataURL(f);
+    } else {
+      // Android — lire EXIF et corriger manuellement
       getExifOrientation(f).then(orient=>{
-      compressImg(e.target.result,1200,1200,0.85,orient).then(src=>{
-        const w=document.createElement('div');w.className='twrap';
-        w.innerHTML='<img class="timg" src="'+src+'" data-src="'+src+'"><button class="tremove" onclick="this.parentElement.remove()">×</button>';
-        c.appendChild(w);document.getElementById(wid).style.display='none';
+        const r=new FileReader();
+        r.onload=e=>{
+          compressImgExif(e.target.result,1200,1200,0.85,orient).then(src=>{
+            const w=document.createElement('div');w.className='twrap';
+            w.innerHTML='<img class="timg" src="'+src+'" data-src="'+src+'"><button class="tremove" onclick="this.parentElement.remove()">×</button>';
+            c.appendChild(w);document.getElementById(wid).style.display='none';
+          });
+        };r.readAsDataURL(f);
       });
-      });
-    };r.readAsDataURL(f);
+    }
   });inp.value='';
 }
+
 function getExifOrientation(file){
   return new Promise(res=>{
     const r=new FileReader();
     r.onload=e=>{
-      const v=new DataView(e.target.result);
-      if(v.getUint16(0,false)!==0xFFD8){return res(1);}
-      let o=2;
-      while(o<v.byteLength){
-        const m=v.getUint16(o,false);o+=2;
-        if(m===0xFFE1){
-          if(v.getUint32(o+=2,false)!==0x45786966){return res(1);}
-          const le=v.getUint16(o+=6,false)===0x4949;o+=2;
-          if(v.getUint16(o,le)!==0x002A){return res(1);}
-          const first=v.getUint32(o+=2,le);o+=first-8;
-          const tags=v.getUint16(o,le);o+=2;
-          for(let t=0;t<tags;t++){
-            if(v.getUint16(o+(t*12),le)===0x0112){return res(v.getUint16(o+(t*12)+8,le));}
-          }
-        } else if((m&0xFF00)!==0xFF00) break;
-        else o+=v.getUint16(o,false);
-      }
+      try{
+        const v=new DataView(e.target.result);
+        if(v.getUint16(0,false)!==0xFFD8){return res(1);}
+        let o=2;
+        while(o<v.byteLength-2){
+          const m=v.getUint16(o,false);o+=2;
+          if(m===0xFFE1){
+            if(v.getUint32(o+=2,false)!==0x45786966){return res(1);}
+            const le=v.getUint16(o+=6,false)===0x4949;o+=2;
+            if(v.getUint16(o,le)!==0x002A){return res(1);}
+            const first=v.getUint32(o+=2,le);o+=first-8;
+            const tags=v.getUint16(o,le);o+=2;
+            for(let t=0;t<tags;t++){
+              if(v.getUint16(o+(t*12),le)===0x0112){return res(v.getUint16(o+(t*12)+8,le));}
+            }
+          } else if((m&0xFF00)!==0xFF00) break;
+          else o+=v.getUint16(o,false);
+        }
+      }catch(e){}
       res(1);
     };
     r.readAsArrayBuffer(file.slice(0,65536));
   });
 }
 
-function compressImg(src,mw,mh,q,orientation){
+// Compression simple sans correction EXIF (iOS)
+function compressImgSimple(src,mw,mh,q){
+  return new Promise(res=>{
+    const i=new Image();
+    i.onload=()=>{
+      let w=i.width,h=i.height;
+      if(w>mw){h=Math.round(h*mw/w);w=mw;}
+      if(h>mh){w=Math.round(w*mh/h);h=mh;}
+      const c=document.createElement('canvas');
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(i,0,0,w,h);
+      res(c.toDataURL('image/jpeg',q));
+    };i.onerror=()=>res(src);i.src=src;
+  });
+}
+
+// Compression avec correction EXIF (Android)
+function compressImgExif(src,mw,mh,q,rot){
   return new Promise(res=>{
     const i=new Image();
     i.onload=()=>{
       const iw=i.width,ih=i.height;
-      // Swap dimensions for rotated orientations
-      const rot=orientation||1;
       const swapped=(rot>=5&&rot<=8);
-      let tw=swapped?ih:iw, th=swapped?iw:ih;
-      if(tw>mw){th=Math.round(th*mw/tw);tw=mw;}if(th>mh){tw=Math.round(tw*mh/th);th=mh;}
+      // Dimensions finales après rotation
+      let fw=swapped?ih:iw, fh=swapped?iw:ih;
+      if(fw>mw){fh=Math.round(fh*mw/fw);fw=mw;}
+      if(fh>mh){fw=Math.round(fw*mh/fh);fh=mh;}
       const c=document.createElement('canvas');
-      c.width=swapped?th:tw;c.height=swapped?tw:th;
+      c.width=fw;c.height=fh;
       const ctx=c.getContext('2d');
-      // Appliquer la rotation EXIF
-      if(rot===2){ctx.transform(-1,0,0,1,c.width,0);}
-      else if(rot===3){ctx.transform(-1,0,0,-1,c.width,c.height);}
-      else if(rot===4){ctx.transform(1,0,0,-1,0,c.height);}
-      else if(rot===5){ctx.transform(0,1,1,0,0,0);}
-      else if(rot===6){ctx.transform(0,1,-1,0,c.height,0);}
-      else if(rot===7){ctx.transform(0,-1,-1,0,c.height,c.width);}
-      else if(rot===8){ctx.transform(0,-1,1,0,0,c.width);}
-      ctx.drawImage(i,0,0,swapped?th:tw,swapped?tw:th);
+      ctx.save();
+      if(rot===2){ctx.translate(fw,0);ctx.scale(-1,1);}
+      else if(rot===3){ctx.translate(fw,fh);ctx.rotate(Math.PI);}
+      else if(rot===4){ctx.translate(0,fh);ctx.scale(1,-1);}
+      else if(rot===5){ctx.rotate(0.5*Math.PI);ctx.scale(1,-1);}
+      else if(rot===6){ctx.translate(fw,0);ctx.rotate(0.5*Math.PI);}
+      else if(rot===7){ctx.translate(fw,fh);ctx.rotate(0.5*Math.PI);ctx.scale(1,-1);}
+      else if(rot===8){ctx.translate(0,fh);ctx.rotate(-0.5*Math.PI);}
+      // Dessiner avec dimensions originales (avant rotation)
+      if(swapped){ctx.drawImage(i,0,0,fh,fw);}
+      else{ctx.drawImage(i,0,0,fw,fh);}
+      ctx.restore();
       res(c.toDataURL('image/jpeg',q));
     };i.onerror=()=>res(src);i.src=src;
   });
+}
+
+function compressImg(src,mw,mh,q){
+  return compressImgSimple(src,mw,mh,q);
 }
 
 let curSigKey=null,sdraw=false,scv,sctx;
