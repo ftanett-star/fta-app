@@ -848,10 +848,11 @@ function buildReportHTML(form){
     /* Tooltip date */
     .date-hint{font-size:0.4rem;color:rgba(255,255,255,0.6);text-align:right;margin-top:3px;letter-spacing:1px;}`;
 
-  var n=new Date();
   var months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  var coverDay=pad(n.getDate());
-  var coverMonth=months[n.getMonth()]+' '+n.getFullYear();
+  var dateInput=document.getElementById('custom-date-'+form);
+  var coverN=dateInput&&dateInput.value?new Date(dateInput.value+'T12:00:00'):new Date();
+  var coverDay=pad(coverN.getDate());
+  var coverMonth=months[coverN.getMonth()]+' '+coverN.getFullYear();
 
   var body='';
 
