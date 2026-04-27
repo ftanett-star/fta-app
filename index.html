@@ -252,7 +252,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 <div class="page" id="page-t1">
   <div class="hdr"><button class="hdr-back" onclick="goHome()">‹</button><div class="hdr-title"><div class="hdr-t1">TERMINAL 1</div><div class="hdr-t2">Satellites 1·3·4·5·6·7 · Niveaux 0→10 · Pavillon</div></div></div>
   <div class="content">
-    <div class="dt-row"><div class="dt-chip">📅 <span id="t1-date">--/--/----</span></div><div class="dt-chip">🕐 <span id="t1-time">--:--</span></div></div>
+    <div class="dt-row"><div class="dt-chip">📅 <input type="date" id="custom-date-t1" style="border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);background:transparent;outline:none;cursor:pointer;"></div><div class="dt-chip">🕐 <input type="time" id="custom-time-t1" style="border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);background:transparent;outline:none;cursor:pointer;"></div></div>
     <div class="loc">📍 Aéroport de Paris-Charles de Gaulle (CDG)</div>
     <div class="fblock"><div class="fhdr"><span style="color:var(--red)">☰</span><span class="ftitle">CONTRÔLEUR</span><span class="fstar">*</span></div><div class="frow" onclick="openSel('t1-ctrl')"><span class="fval" id="val-t1-ctrl">Sélectionner une valeur</span><span class="farrow">›</span></div></div>
     <div class="fblock"><div class="fhdr"><span style="color:var(--red)">☰</span><span class="ftitle">CLIENT</span><span class="fstar">*</span></div><div class="frow" onclick="openSel('t1-cli')"><span class="fval" id="val-t1-cli">Sélectionner une valeur</span><span class="farrow">›</span></div></div>
@@ -312,7 +312,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 <div class="page" id="page-t3">
   <div class="hdr"><button class="hdr-back" onclick="goHome()">‹</button><div class="hdr-title"><div class="hdr-t1">TERMINAL 3</div><div class="hdr-t2">Départ &amp; Arrivée</div></div></div>
   <div class="content">
-    <div class="dt-row"><div class="dt-chip">📅 <span id="t3-date">--/--/----</span></div><div class="dt-chip">🕐 <span id="t3-time">--:--</span></div></div>
+    <div class="dt-row"><div class="dt-chip">📅 <input type="date" id="custom-date-t3" style="border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);background:transparent;outline:none;cursor:pointer;"></div><div class="dt-chip">🕐 <input type="time" id="custom-time-t3" style="border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);background:transparent;outline:none;cursor:pointer;"></div></div>
     <div class="loc">📍 Aéroport de Paris-Charles de Gaulle (CDG)</div>
     <div class="fblock"><div class="fhdr"><span style="color:var(--red)">☰</span><span class="ftitle">CONTRÔLEUR</span><span class="fstar">*</span></div><div class="frow" onclick="openSel('t3-ctrl')"><span class="fval" id="val-t3-ctrl">Sélectionner une valeur</span><span class="farrow">›</span></div></div>
     <div class="fblock"><div class="fhdr"><span style="color:var(--red)">☰</span><span class="ftitle">CLIENT</span><span class="fstar">*</span></div><div class="frow" onclick="openSel('t3-cli')"><span class="fval" id="val-t3-cli">Sélectionner une valeur</span><span class="farrow">›</span></div></div>
@@ -340,7 +340,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 <div class="page" id="page-nodal">
   <div class="hdr"><button class="hdr-back" onclick="goHome()">‹</button><div class="hdr-title"><div class="hdr-t1">NODAL</div><div class="hdr-t2">Niveaux -3·-2·-1·0·1 · Galerie marchande</div></div></div>
   <div class="content">
-    <div class="dt-row"><div class="dt-chip">📅 <span id="nd-date">--/--/----</span></div><div class="dt-chip">🕐 <span id="nd-time">--:--</span></div></div>
+    <div class="dt-row"><div class="dt-chip">📅 <input type="date" id="custom-date-nd" style="border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);background:transparent;outline:none;cursor:pointer;"></div><div class="dt-chip">🕐 <input type="time" id="custom-time-nd" style="border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);background:transparent;outline:none;cursor:pointer;"></div></div>
     <div class="loc">📍 Aéroport de Paris-Charles de Gaulle (CDG)</div>
     <div class="fblock"><div class="fhdr"><span style="color:var(--red)">☰</span><span class="ftitle">CONTRÔLEUR</span><span class="fstar">*</span></div><div class="frow" onclick="openSel('nd-ctrl')"><span class="fval" id="val-nd-ctrl">Sélectionner une valeur</span><span class="farrow">›</span></div></div>
     <div class="fblock"><div class="fhdr"><span style="color:var(--red)">☰</span><span class="ftitle">CLIENT</span><span class="fstar">*</span></div><div class="frow" onclick="openSel('nd-cli')"><span class="fval" id="val-nd-cli">Sélectionner une valeur</span><span class="farrow">›</span></div></div>
@@ -397,18 +397,39 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);max-
 
 <script>
 function pad(n){return String(n).padStart(2,'0');}
-function getDT(){const n=new Date();return{d:pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+n.getFullYear(),t:pad(n.getHours())+':'+pad(n.getMinutes())};}
+function getDT(form){
+  // Si un form est passé, on utilise la date saisie manuellement
+  if(form){
+    var dateInput=document.getElementById('custom-date-'+form);
+    var timeInput=document.getElementById('custom-time-'+form);
+    if(dateInput&&dateInput.value){
+      var parts=dateInput.value.split('-'); // YYYY-MM-DD
+      var d=parts[2]+'/'+parts[1]+'/'+parts[0];
+      var t=timeInput&&timeInput.value?timeInput.value:pad(new Date().getHours())+':'+pad(new Date().getMinutes());
+      return{d:d,t:t};
+    }
+  }
+  const n=new Date();return{d:pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+n.getFullYear(),t:pad(n.getHours())+':'+pad(n.getMinutes())};
+}
 function updateAllDates(){
   const{d,t}=getDT();
-  ['t1','t3','nd'].forEach(f=>{const de=document.getElementById(f+'-date'),te=document.getElementById(f+'-time');if(de)de.textContent=d;if(te)te.textContent=t;});
   document.getElementById('home-date').textContent=d+' · '+t;
   const n=new Date();
   const months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
   const dayEl=document.getElementById('cover-day'),monthEl=document.getElementById('cover-month');
   if(dayEl)dayEl.textContent=pad(n.getDate());
   if(monthEl)monthEl.textContent=months[n.getMonth()]+' '+n.getFullYear();
+  // Pré-remplir les inputs date/heure avec la date et heure actuelles
+  var todayStr=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate());
+  var timeStr=pad(n.getHours())+':'+pad(n.getMinutes());
+  ['t1','t3','nd'].forEach(function(f){
+    var di=document.getElementById('custom-date-'+f);
+    var ti=document.getElementById('custom-time-'+f);
+    if(di&&!di.value) di.value=todayStr;
+    if(ti&&!ti.value) ti.value=timeStr;
+  });
 }
-updateAllDates();setInterval(updateAllDates,10000);
+updateAllDates();
 
 let currentForm=null;
 function openForm(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');window.scrollTo(0,0);currentForm=id;}
@@ -659,7 +680,7 @@ function sendEmailReport(form){
   const cfg=formConfig[form];
   const ctrl=document.getElementById('val-'+cfg.ctrlKey).textContent;
   const cli=document.getElementById('val-'+cfg.cliKey).textContent;
-  const{d,t}=getDT();
+  const{d,t}=getDT(form);
   const params={terminal:cfg.title,controleur:ctrl,client:cli,date:d+' '+t,to_email:'fta.nett@gmail.com',name:'FTA Nettoyage App',nom:ctrl,temps:d+' '+t,email:'fta.nett@gmail.com',message:'Rapport de contrôle '+cfg.title+' du '+d+' à '+t+'. Contrôleur: '+ctrl+'. Client: '+cli+'.'};
   emailjs.send('service_915ke0p','template_55844q',params)
     .then(function(){showToast('📧 Rapport envoyé par email !');})
@@ -681,7 +702,7 @@ function submit(form){
 
 function doPrint(form, printOnly){
   const cfg=formConfig[form];
-  const{d,t}=getDT();
+  const{d,t}=getDT(form);
   const ctrl=document.getElementById('val-'+cfg.ctrlKey).textContent;
   const cli=document.getElementById('val-'+cfg.cliKey).textContent;
   const parts=ctrl.split(' ');
@@ -704,9 +725,13 @@ function doPrint(form, printOnly){
     const homeDateEl=clone.querySelector('#home-date');
     const n=new Date();
     const months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-    if(dayEl) dayEl.textContent=pad(n.getDate());
-    if(monthEl) monthEl.textContent=months[n.getMonth()]+' '+n.getFullYear();
-    if(homeDateEl) homeDateEl.textContent=d+' · '+t;
+    // Utiliser la date custom si saisie
+    var coverDateInput=document.getElementById('custom-date-'+form);
+    var coverD=d,coverT=t;
+    var coverN=coverDateInput&&coverDateInput.value?new Date(coverDateInput.value):n;
+    if(dayEl) dayEl.textContent=pad(coverN.getDate());
+    if(monthEl) monthEl.textContent=months[coverN.getMonth()]+' '+coverN.getFullYear();
+    if(homeDateEl) homeDateEl.textContent=coverD+' · '+coverT;
     html += '<div class="cover-page" style="page-break-after:always;max-width:100%;overflow:hidden;">' + clone.outerHTML + '</div>';
   }
   // ===== FIN COUVERTURE =====
@@ -762,7 +787,7 @@ function doPrint(form, printOnly){
 
 function buildReportHTML(form){
   var cfg=formConfig[form];
-  var{d,t}=getDT();
+  var{d,t}=getDT(form);
   var ctrl=document.getElementById('val-'+cfg.ctrlKey).textContent;
   var cli=document.getElementById('val-'+cfg.cliKey).textContent;
   var parts=ctrl.split(' ');
@@ -957,7 +982,7 @@ function editCoverDate() {
 function doDownload(form){
   try{
     var cfg=formConfig[form];
-    var{d,t}=getDT();
+    var{d,t}=getDT(form);
     var ctrl=document.getElementById('val-'+cfg.ctrlKey).textContent;
     var cli=document.getElementById('val-'+cfg.cliKey).textContent;
     var fileName='ADP_Roissy_'+cfg.title.replace(/ /g,'_')+'_'+d.replace(/\//g,'-');
